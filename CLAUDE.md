@@ -34,7 +34,10 @@ A static web app, no build step. Open `index.html` to run it.
 |---|---|
 | `index.html` | page and all styling |
 | `game.js` | game logic: innings, scoring, pitch clock, sound, stats, Film Room |
-| `questions.js` | `RULES` (one entry per rule he missed) and `QUESTIONS` |
+| `questions.js` | `RULES` (one skill family per rule he missed) and the rematch `QUESTIONS` |
+| `cousins.js` | "new pitch" questions: same family, different ACT standard |
+| `officials.js` | official ACT questions by family, for the Road Trip screen (numbers and pages only) |
+| `research/` | `SKILLS.md`: ACT's skill codes, his misses coded, and the official-question map; plus the per-question classification JSON |
 
 How it plays: each question is an at-bat. A right answer is a hit, and speed
 on the 42-second pitch clock (real ACT English pace) earns extra bases. A
@@ -43,13 +46,41 @@ sends the question to the Film Room, where it keeps coming back until he gets
 it right. Questions from his weakest rules come up most. Stats are saved in
 the browser on his device only.
 
+## Two kinds of question
+
+Levi asked for both, so keep both stocked:
+
+- **Rematch** (`kind: "rematch"`): the same narrow rule and the same trap
+  as a real miss. Written from the bank's recipe.
+- **Cousin** (`kind: "cousin"`): the same skill family, but a neighbouring
+  ACT standard. For example, his "one of the notes" miss is USG 701, and
+  the cousins drill USG 601 (inverted order, neither, either/or, "there
+  are"). The families and their standards are in `research/SKILLS.md`.
+
+Every question carries `code`, the ACT College & Career Readiness Standard
+it tests, and `skill`, a few words naming the rule. The skill label only
+shows after he answers, because it would give the answer away.
+
+## Official questions (Road Trip)
+
+`officials.js` lists real questions from ACT's free official tests, by
+number and page, that test his families. It never includes question text:
+the tests are ACT's copyright and this repo is public. To add a new
+official test, have an agent solve and code every English question against
+the standards (see the JSON in `research/` for the format), then regenerate
+`officials.js` from the JSON. The 2025–26 and 2026–27 free guides use the
+25MC1 English section he has already taken, so they add nothing.
+Practice Test 2 is hidden behind a button because Mark may want it as a
+mock.
+
 ## Adding questions after a new test
 
 1. Make sure the new misses are in `ERRORS.md` and the bank (see the ACT
    folder's README for how). Don't add them here first.
 2. If a miss is a rule not in `RULES`, add an entry: `short` label, a `tip`
    written to Levi in plain words, and `missed` naming the test question.
-3. Write 3 to 5 new questions per miss into `QUESTIONS`, following the
+3. Write 3 to 5 rematches per miss into `QUESTIONS`, and a few cousins into
+   `cousins.js` for any family that is new, following the
    bank's recipe for that row and the rules on tab 3. In short:
    - new sentence, new topic; never reuse ACT text. Baseball and Yankees
      topics keep it fun, but every fact must be true. If you're not sure of

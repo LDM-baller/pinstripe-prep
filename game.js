@@ -22,9 +22,9 @@ let S = load() || { q: {}, w: 0, l: 0, muted: false };
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} }
 function qs(id) { return (S.q[id] ||= { seen: 0, right: 0, film: false, last: null }); }
 
-function ruleStats(rule) {
+function ruleStats(rule, kind) {
   let ab = 0, h = 0;
-  for (const q of QUESTIONS) if (q.rule === rule && S.q[q.id]) { ab += S.q[q.id].seen; h += S.q[q.id].right; }
+  for (const q of QUESTIONS) if (q.rule === rule && (!kind || q.kind === kind) && S.q[q.id]) { ab += S.q[q.id].seen; h += S.q[q.id].right; }
   return { ab, h };
 }
 function avg(h, ab) { return ab ? (h / ab).toFixed(3).replace(/^0/, "") : ".000"; }
@@ -232,15 +232,20 @@ function nextAtBat() {
   $("#inningTag").innerHTML = inningTag();
   drawBoard();
   const letters = G.abNum % 2 ? ["A", "B", "C", "D"] : ["F", "G", "H", "J"];
-  G.letters = letters;
+  // "No Change" stays first and "Delete" stays last, like the real test; the rest are shuffled.
+  const del = [1, 2, 3].filter(k => /^Delete/.test(q.choices[k]));
+  const rest = [1, 2, 3].filter(k => !del.includes(k)).sort(() => Math.random() - 0.5);
+  G.order = [0, ...rest, ...del];
+  G.letters = [0, 1, 2, 3].map(k => letters[G.order.indexOf(k)]);
   const passage = q.passage.replace(/\[\[(.+?)\]\]/, (_, u) => `<u>${u}</u><span class="num">${G.abNum}</span>`);
   $("#stage").innerHTML = `
     <div class="card">
-      <div class="meta"><span>${RULES[q.rule].short}</span><span>Rematch of <b>${q.from}</b></span></div>
+      <div class="meta"><span>${RULES[q.rule].short} · ${q.code}</span>${q.kind === "cousin"
+        ? `<span class="newp">NEW PITCH</span>` : `<span>Rematch of <b>${q.from}</b></span>`}</div>
       <p class="passage">${passage}</p>
       <p class="stem">${G.abNum}. ${q.stem}</p>
-      <div class="choices">${q.choices.map((c, i) =>
-        `<button class="choice" data-i="${i}"><span class="L">${letters[i]}</span><span>${c}</span></button>`).join("")}</div>
+      <div class="choices">${G.order.map((k, pos) =>
+        `<button class="choice" data-i="${k}"><span class="L">${letters[pos]}</span><span>${q.choices[k]}</span></button>`).join("")}</div>
     </div>`;
   $("#stage").querySelectorAll(".choice").forEach(b => b.onclick = () => answer(+b.dataset.i));
   startClock();
@@ -278,9 +283,9 @@ function answer(i) {
   stopClock();
   const q = G.q, secs = (Date.now() - clockStart) / 1000, right = i === q.answer;
   const box = $("#stage .choices"); box.classList.add("locked");
-  const btns = box.querySelectorAll(".choice");
-  btns[q.answer].classList.add("right");
-  if (!right) { btns[i].classList.add("wrong"); btns[q.trap].classList.add("trapmark"); }
+  const btn = k => box.querySelector(`.choice[data-i="${k}"]`);
+  btn(q.answer).classList.add("right");
+  if (!right) { btn(i).classList.add("wrong"); btn(q.trap).classList.add("trapmark"); }
 
   const st = qs(q.id); st.seen++; st.last = right;
   if (right) { st.right++; if (G.mode === "film") st.film = false; } else st.film = true;
@@ -320,10 +325,11 @@ function answer(i) {
   film.className = "film " + (right ? "good" : "bad");
   film.innerHTML = `
     <h4>${headline}</h4>
+    <p style="font-size:12.5px;opacity:.7;margin-top:-2px">ACT skill ${q.code} · ${q.skill}</p>
     <p><b>${L[q.answer]} is right.</b> ${q.why}</p>
     ${right ? `<p style="opacity:.8"><b>The trap was ${L[q.trap]}.</b> ${q.trapWhy}</p>`
             : `<p><b>${i === q.trap ? "You swung at " + L[q.trap] + ", the trap." : "The trap was " + L[q.trap] + "."}</b> ${q.trapWhy}</p>`}
-    ${right ? "" : `<p class="tip">📋 ${RULES[q.rule].tip}</p><p style="font-size:13px;opacity:.75">Sent to the Film Room. It'll come back until you hit it.</p>`}
+    ${right ? "" : `${q.kind === "rematch" ? `<p class="tip">📋 ${RULES[q.rule].tip}</p>` : ""}<p style="font-size:13px;opacity:.75">Sent to the Film Room. It'll come back until you hit it.</p>`}
     <button class="btn primary next">${nextLabel()}</button>`;
   $("#stage").appendChild(film);
   film.querySelector(".next").onclick = advanceGame;
@@ -418,7 +424,8 @@ function scout() {
     <h2 class="bebas">Scouting Report</h2>
     <p class="center" style="text-align:left">Season: ${h}-for-${ab}, ${avg(h, ab)} · Record ${S.w}–${S.l} · Film Room ${filmIds().length}</p>
     <div class="panel"><h3>By rule</h3>
-      ${Object.entries(RULES).map(([r, info]) => { const s = ruleStats(r); return rowHTML(info.short, s.h, s.ab, `Missed on the real test: ${info.missed}. ${info.tip}`); }).join("")}
+      ${Object.entries(RULES).map(([r, info]) => { const s = ruleStats(r), a = ruleStats(r, "rematch"), c = ruleStats(r, "cousin");
+        return rowHTML(info.short, s.h, s.ab, `Rematches ${a.h}-for-${a.ab} · New pitches ${c.h}-for-${c.ab}. Missed on the real test: ${info.missed}. ${info.tip}`); }).join("")}
     </div>
     <button class="btn" id="reset" style="width:100%">Reset all stats</button>`;
   show("scout");
@@ -440,6 +447,54 @@ function bpPicker() {
     newGame("bp", { pool: QUESTIONS.filter(q => q.rule === b.dataset.rule), label: b.dataset.rule }));
 }
 
+// ---------- road trip: official ACT questions, done on paper ----------
+// Each official question gets a state per device: undefined (not done),
+// "hit" or "miss". The skill label is hidden until he checks the answer,
+// because it can give the answer away.
+function famRule(fam) { return Object.keys(RULES).find(r => RULES[r].fam === fam); }
+function roadTrip(showPt2) {
+  S.road ||= {};
+  const tests = OFFICIAL_TESTS.filter(t => showPt2 || t.key !== "pt2");
+  const done = OFFICIAL.filter(o => S.road[o.t + o.q]);
+  const hits = done.filter(o => S.road[o.t + o.q] === "hit").length;
+  $("#road").innerHTML = `
+    <button class="back" id="rBack">◂ Clubhouse</button>
+    <h2 class="bebas">Road Trip</h2>
+    <p style="color:var(--dim);line-height:1.5">Real ACT questions from ACT's free official tests, sorted by the skills you've missed. Open the PDF, do the question on paper, then tap it here to check. ★ = the same rule as one of your real misses.</p>
+    <p class="center" style="text-align:left">Road record: ${hits}-for-${done.length}</p>
+    ${tests.map(t => `<a class="btn" style="text-decoration:none;margin:8px 0" href="${t.url}" target="_blank" rel="noopener">${t.name} PDF ↗<small>${t.sub}</small></a>`).join("")}
+    ${showPt2 ? "" : `<button class="btn" id="pt2" style="width:100%;margin-top:8px">+ Also show Practice Test 2 <small>ask Mark first: it may be saved for a mock</small></button>`}
+    ${Object.entries(RULES).map(([r, info]) => {
+      const list = OFFICIAL.filter(o => o.fam === info.fam && tests.some(t => t.key === o.t))
+        .sort((a, b) => (b.core - a.core) || a.t.localeCompare(b.t) || a.q - b.q);
+      if (!list.length) return "";
+      return `<div class="panel"><h3>${info.short}</h3>${list.map(o => {
+        const st = S.road[o.t + o.q], t = OFFICIAL_TESTS.find(x => x.key === o.t);
+        return `<div class="trip ${st || ""}" data-k="${o.t + o.q}">
+          <div class="trip-top"><b>${o.core ? "★ " : ""}${t.name.replace("ACT ", "")} · #${o.q}</b><span>p. ${o.p} · ${o.code}</span></div>
+          ${st ? `<div class="trip-ans">Answer ${o.ans} · ${o.skill}</div>` : ""}
+          <div class="trip-btns">${st
+            ? `<button data-set="">${st === "hit" ? "✓ Got it" : "✗ Missed"} · undo</button>`
+            : `<button data-check>Check answer</button>`}</div>
+        </div>`; }).join("")}</div>`;
+    }).join("")}
+    <p style="color:var(--dim);font-size:12px">Answer keys: Form 2176CPRE p. ${OFFICIAL_TESTS[0].keyPage}, Practice Test 2 p. ${OFFICIAL_TESTS[1].keyPage} of each PDF.</p>`;
+  show("road");
+  $("#rBack").onclick = home;
+  if ($("#pt2")) $("#pt2").onclick = () => roadTrip(true);
+  $("#road").querySelectorAll(".trip").forEach(el => {
+    const k = el.dataset.k, o = OFFICIAL.find(x => x.t + x.q === k);
+    const redraw = () => { const y = scrollY; roadTrip(showPt2); scrollTo(0, y); };
+    const chk = el.querySelector("[data-check]");
+    if (chk) chk.onclick = () => {
+      el.querySelector(".trip-btns").innerHTML =
+        `<span style="flex:1">Answer: <b>${o.ans}</b></span><button data-set="hit">✓ Got it</button><button data-set="miss">✗ Missed</button>`;
+      el.querySelectorAll("[data-set]").forEach(b => b.onclick = () => { S.road[k] = b.dataset.set; save(); redraw(); });
+    };
+    el.querySelectorAll(".trip-btns > [data-set]").forEach(b => b.onclick = () => { delete S.road[k]; save(); redraw(); });
+  });
+}
+
 // ---------- wiring ----------
 document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => {
   ctx();
@@ -447,6 +502,7 @@ document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => {
   if (go === "quick" || go === "full") newGame(go);
   else if (go === "bp") bpPicker();
   else if (go === "scout") scout();
+  else if (go === "road") roadTrip(false);
   else if (go === "filmroom") {
     if (!filmIds().length) { banner("FILM ROOM EMPTY", "Go miss something first", 1800); return; }
     newGame("film");
