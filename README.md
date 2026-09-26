@@ -26,6 +26,14 @@ missed on a practice test. Two kinds of pitch:
   on paper, then check and log them in the app.
 - **Scouting Report:** your average on each rule, next to the question you
   missed on the real test.
+- **Pitch clock, three modes:** Timed (ACT pace, 42s a question), Reduced time
+  (31s, Mark's 25-questions-in-13-minutes drill) or Untimed. Pick one on the
+  home screen or tap the clock during any question. Every attempt records its
+  mode and time. Over the clock, a right answer is only ever a single.
+- **About & Report Card:** where the questions come from, how they map to ACT's
+  skill codes, and how Levi is doing by skill, by ACT code and by question,
+  including his time on each. Tap in to drill down. **Send this report to Mark**
+  makes a link; opening it shows the same report as a read-only snapshot.
 - Take the lead in the bottom of the last inning and it's a **walk-off**.
 
 On an iPhone, open the link in Safari and tap Share, then Add to Home Screen.

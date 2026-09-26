@@ -3,7 +3,15 @@
 "use strict";
 
 const $ = (s, r = document) => r.querySelector(s);
-const PITCH_CLOCK = 42;          // real ACT English pace: 50 questions in 35 minutes
+// Timing modes. He can switch before any question by tapping the clock, and
+// every attempt records which mode it was in.
+const CLOCKS = {
+  act:  { limit: 42, label: "TIMED · ACT PACE", name: "Timed (ACT pace, 42s)" },     // 50 questions in 35 minutes
+  fast: { limit: 31, label: "REDUCED TIME", name: "Reduced time (31s)" },           // Mark's drill: 25 questions in 13 minutes
+  off:  { limit: 0,  label: "UNTIMED", name: "Untimed" },
+};
+const CLOCK_ORDER = ["act", "fast", "off"];
+const clockMode = () => CLOCKS[S.clock] ? S.clock : "act";
 const AB_PER_INNING = 3;
 const RIVALS = [
   { abbr: "BOS", name: "Red Sox" }, { abbr: "BAL", name: "Orioles" },
@@ -135,6 +143,8 @@ function home() {
   $("#seasonAvg").textContent = avg(h, ab);
   $("#record").textContent = `${S.w}–${S.l}`;
   requestAnimationFrame(() => $("#title").classList.add("lit"));
+  $("#clockPick").innerHTML = CLOCK_ORDER.map(k => `<button data-clock="${k}" class="${k === clockMode() ? "on" : ""}">⏱ ${CLOCKS[k].name}</button>`).join("");
+  $("#clockPick").querySelectorAll("button").forEach(b => b.onclick = () => { S.clock = b.dataset.clock; save(); home(); });
 }
 
 // ---------- picking questions ----------
@@ -251,22 +261,41 @@ function nextAtBat() {
   startClock();
 }
 
-function startClock() {
-  stopClock(); clockStart = Date.now();
-  const el = $("#clock"), n = $("#clockN");
-  const tick = () => {
-    const left = Math.max(0, PITCH_CLOCK - Math.floor((Date.now() - clockStart) / 1000));
-    n.textContent = left;
-    el.classList.toggle("hot", left > PITCH_CLOCK - 15);
-    el.classList.toggle("cold", left === 0);
-  };
-  tick(); clockT = setInterval(tick, 250);
+let expired = false;
+function tickClock() {
+  const c = CLOCKS[clockMode()], el = $("#clock");
+  const secs = Math.floor((Date.now() - clockStart) / 1000);
+  $("#clockLabel").textContent = c.label;
+  if (!c.limit) {  // untimed: count up so he still sees his pace
+    $("#clockN").textContent = secs;
+    el.classList.remove("hot", "cold", "late");
+    return;
+  }
+  const left = c.limit - secs;
+  $("#clockN").textContent = left >= 0 ? left : "+" + -left;
+  el.classList.toggle("hot", left > c.limit - 12);
+  el.classList.toggle("late", left < 0);
+  if (left < 0 && !expired) { expired = true; buzz(80); whiff(); }
 }
+function startClock() {
+  stopClock(); clockStart = Date.now(); expired = false;
+  tickClock(); clockT = setInterval(tickClock, 250);
+}
+$("#clock").onclick = () => {
+  // Switching is allowed any time before answering; the elapsed time carries over.
+  if (!clockT) return;
+  S.clock = CLOCK_ORDER[(CLOCK_ORDER.indexOf(clockMode()) + 1) % CLOCK_ORDER.length]; save();
+  expired = false; tickClock();
+  banner(CLOCKS[S.clock].name.toUpperCase(), "tap the clock any time to switch", 1300);
+};
 function stopClock() { clearInterval(clockT); clockT = null; }
 
 function hitType(secs) {
-  // Speed earns extra bases, but a right answer always reaches base.
-  let bases = secs <= 15 ? 4 : secs <= 24 ? 3 : secs <= 34 ? 2 : 1;
+  // Speed earns extra bases, scaled to the clock he chose; a right answer always
+  // reaches base, but a late one is only ever a single.
+  const lim = CLOCKS[clockMode()].limit || 42, f = secs / lim;
+  let bases = f <= 0.36 ? 4 : f <= 0.57 ? 3 : f <= 0.8 ? 2 : 1;
+  if (CLOCKS[clockMode()].limit && secs > lim) return 1;
   if (G.streak >= 3 && bases < 4) bases++;
   return bases;
 }
@@ -289,8 +318,12 @@ function answer(i) {
 
   const st = qs(q.id); st.seen++; st.last = right;
   if (right) { st.right++; if (G.mode === "film") st.film = false; } else st.film = true;
-  save();
   G.log.push({ id: q.id, rule: q.rule, right });
+  // Full history for the About page: which choice, how fast, when, in what mode.
+  const limit = CLOCKS[clockMode()].limit;
+  (S.hist ||= []).push({ id: q.id, c: i, r: right ? 1 : 0, s: Math.round(secs), d: Date.now(), m: G.mode, t: limit });
+  if (S.hist.length > 1500) S.hist.splice(0, S.hist.length - 1500);
+  save();
 
   const scored = G.mode === "quick" || G.mode === "full";
   let headline;
@@ -326,6 +359,7 @@ function answer(i) {
   film.innerHTML = `
     <h4>${headline}</h4>
     <p style="font-size:12.5px;opacity:.7;margin-top:-2px">ACT skill ${q.code} · ${q.skill}</p>
+    <p style="font-size:13px;margin:4px 0 8px">⏱ ${timeLine(secs)}</p>
     <p><b>${L[q.answer]} is right.</b> ${q.why}</p>
     ${right ? `<p style="opacity:.8"><b>The trap was ${L[q.trap]}.</b> ${q.trapWhy}</p>`
             : `<p><b>${i === q.trap ? "You swung at " + L[q.trap] + ", the trap." : "The trap was " + L[q.trap] + "."}</b> ${q.trapWhy}</p>`}
@@ -334,6 +368,12 @@ function answer(i) {
   $("#stage").appendChild(film);
   film.querySelector(".next").onclick = advanceGame;
   setTimeout(() => film.scrollIntoView({ behavior: "smooth", block: "nearest" }), 600);
+}
+
+function timeLine(secs) {
+  const lim = CLOCKS[clockMode()].limit, t = Math.round(secs);
+  if (!lim) return `${t} seconds, untimed (ACT pace is 42)`;
+  return t <= lim ? `${t}s of ${lim} — beat the clock` : `<b style="color:var(--gold)">${t}s — ${t - lim}s over the ${lim}s clock</b>`;
 }
 
 function advance(bases) {
@@ -430,7 +470,7 @@ function scout() {
     <button class="btn" id="reset" style="width:100%">Reset all stats</button>`;
   show("scout");
   $("#sBack").onclick = home;
-  $("#reset").onclick = () => { if (confirm("Wipe every stat on this device?")) { S = { q: {}, w: 0, l: 0, muted: S.muted }; save(); scout(); } };
+  $("#reset").onclick = () => { if (confirm("Wipe every stat on this device?")) { S = { q: {}, w: 0, l: 0, muted: S.muted, hist: [], road: {} }; save(); scout(); } };
 }
 
 function bpPicker() {
@@ -503,6 +543,7 @@ document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => {
   else if (go === "bp") bpPicker();
   else if (go === "scout") scout();
   else if (go === "road") roadTrip(false);
+  else if (go === "about") PPAbout.open(S);
   else if (go === "filmroom") {
     if (!filmIds().length) { banner("FILM ROOM EMPTY", "Go miss something first", 1800); return; }
     newGame("film");
@@ -512,5 +553,6 @@ const mute = $("#mute");
 const drawMute = () => mute.textContent = S.muted ? "🔇" : "🔊";
 mute.onclick = () => { S.muted = !S.muted; save(); drawMute(); if (S.muted && "speechSynthesis" in window) speechSynthesis.cancel(); };
 drawMute();
-home();
+window.PP = { show, home, avg };
+if (!PPAbout.fromLink()) home();
 })();

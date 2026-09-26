@@ -36,6 +36,7 @@ A static web app, no build step. Open `index.html` to run it.
 | `game.js` | game logic: innings, scoring, pitch clock, sound, stats, Film Room |
 | `questions.js` | `RULES` (one skill family per rule he missed) and the rematch `QUESTIONS` |
 | `cousins.js` | "new pitch" questions: same family, different ACT standard |
+| `about.js` | About & Report Card page, and the "send to Mark" snapshot link |
 | `officials.js` | official ACT questions by family, for the Road Trip screen (numbers and pages only) |
 | `research/` | `SKILLS.md`: ACT's skill codes, his misses coded, and the official-question map; plus the per-question classification JSON |
 
@@ -45,6 +46,21 @@ wrong answer is a strikeout; the app marks the trap choice, explains it, and
 sends the question to the Film Room, where it keeps coming back until he gets
 it right. Questions from his weakest rules come up most. Stats are saved in
 the browser on his device only.
+
+## Stats, timing and the report card
+
+Stats live in `localStorage` on Levi's device only (`pinstripePrep.v1`). Every
+attempt is appended to `S.hist` as `{id, c: choice index, r: right, s: seconds,
+d: timestamp, m: game mode, t: clock limit}`. `t` is 42 (Timed, ACT pace), 31
+(Reduced time, Mark's 25-in-13 drill) or 0 (Untimed); attempts from before
+timing modes existed have no `t` and ran on the 42s clock. Road Trip results
+are in `S.road`.
+
+Mark can't see Levi's device, so the report card's "Send this report to Mark"
+button packs the stats into a compressed `#report=` link. Opening it renders
+the report read-only and never writes to the viewer's storage. If you change
+the shape of `S.hist`, keep `pack`/`unpack` in `about.js` in step, and keep
+old links readable.
 
 ## Two kinds of question
 
