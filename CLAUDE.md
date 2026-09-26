@@ -76,6 +76,12 @@ minute or two:
 
     git add -A && git commit -m "Add questions from <test>" && git push
 
+If the push fails to authenticate, the machine's git credential helper is
+pointing at a `gh` binary that no longer exists. Download the official
+GitHub CLI from github.com/cli/cli/releases into your scratchpad (the account
+is already logged in) and push with
+`git -c credential.helper= -c "credential.helper=!<path>/gh auth git-credential" push`.
+
 The repo is public, so keep it to his first name. No surname, school,
 email, or scores in any file here.
 
