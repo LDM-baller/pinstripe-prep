@@ -1,7 +1,7 @@
 # Pinstripe Prep
 
 A Yankees-themed ACT English practice game built from the questions Levi
-missed on a practice test. Two kinds of pitch:
+missed on practice ACTs (25MC1 and G19). Two kinds of pitch:
 
 - **Rematches:** new sentence, same rule, same trap as a question he missed.
 - **New pitches:** the same skill family, but a different rule from ACT's
@@ -39,7 +39,8 @@ missed on a practice test. Two kinds of pitch:
 On an iPhone, open the link in Safari and tap Share, then Add to Home Screen.
 
 Skill families covered: subject-verb agreement, pronouns, tone and word choice,
-transitions, relative clauses, and punctuation. `research/SKILLS.md` explains
+transitions, relative clauses, punctuation (paired dashes, extra commas,
+semicolons and colons), and what a sentence part does (deletion questions). `research/SKILLS.md` explains
 how ACT classifies questions and maps every miss and question to ACT's codes.
 
 The questions are original and written for this app. No ACT test material is

@@ -43,7 +43,16 @@ score band: 3xx is 16–19, 4xx is 20–23, 5xx is 24–27, 6xx is 28–32, and
 | #31 | "that which" | SST 401: missing or incorrect relative pronouns | 20–23 |
 | #33 | "can, and should" | PUN 503: punctuation to set off complex parenthetical elements | 24–27 |
 
-Most of his misses sit in the 24–32 bands, which is the right place to
+G19 (April 2024 ACT, 25-question mini-test, added 2026-10-03):
+
+| G19 | Miss | ACT standard | Band |
+|---|---|---|---|
+| #1 | comma before the name in "Vermont farmer Wilson Bentley" | PUN 701: delete punctuation around essential appositives (also PUN 201, no comma between verb and object) | 33–36 |
+| #7 | "; this being …" where a dash introduced an explanation | PUN 702: colon (or dash) to introduce an elaboration; the trap is PUN 502, a semicolon before a fragment | 33–36 |
+| #20 | comma after a long subject, before the rest of it | PUN 501: delete commas in long or involved sentences | 24–27 |
+| #23 | read a judgment into a phrase that gives a cause | TOD 502: purpose of a phrase that gives reasons | 24–27 |
+
+Most of his 25MC1 misses sit in the 24–32 bands, which is the right place to
 push for a score in the high 20s or above. #21 is a 33–36 skill; missing
 it is normal at this stage.
 
@@ -58,7 +67,8 @@ Each family in the app covers these related standards:
 | Tone & word choice | KLA 401, 502, 602 (redundancy and wordiness); KLA 503 (tone); USG 603 (confused words) |
 | Transitions | ORG 401, 501, 601; KLA 504, 603 (conjunctions within a sentence) |
 | Relative clauses | SST 401; SST 301 (fragments); PUN 602, 701 (which vs. that, commas); USG 602 (whose, who/whom) |
-| Punctuation | PUN 401, 501 (unnecessary commas); PUN 502, 702 (colons and semicolons); PUN 503, 602, 701 (interruptions, essential vs. not); SST 301 (comma splices) |
+| Punctuation | PUN 401, 501 (unnecessary commas); PUN 502, 702 (colons and semicolons); PUN 503, 602, 701 (interruptions, essential vs. not); SST 301 (comma splices). Three rules share this family: paired dashes (25MC1 #33), unnecessary punctuation (G19 #1, #20; PUN 501, 602, 701) and semicolons, dashes and colons (G19 #7; PUN 604, 702) |
+| What a part does | TOD 502 (purpose of a phrase: cause, example, contrast, definition); TOD 501, 601 (keep or delete); TOD 504, 603 (pick the phrase that does a job); TOD 602 (supports a later point) |
 
 ## Official questions by family
 
@@ -75,6 +85,12 @@ JSON files in this folder; the app's Road Trip screen reads it from
 | Transitions | 2176CPRE #2 (p.14, ORG 501), 2176CPRE #8 (p.15, ORG 501), 2176CPRE #26 (p.18, ORG 501), 2176CPRE #69 (p.25, ORG 501), 2176CPRE #72 (p.25, ORG 501), 2176CPRE #73 (p.25, ORG 501), PT2 #26 (p.10, ORG 601), PT2 #40 (p.13, ORG 601) |
 | Relative clauses | 2176CPRE #6 (p.15, SST 501), 2176CPRE #22 (p.17, SST 501), 2176CPRE #57 (p.23, USG 602) |
 | Punctuation & clause boundaries | ★2176CPRE #47 (p.22, PUN 503), ★2176CPRE #49 (p.22, PUN 602), ★2176CPRE #68 (p.24, PUN 503), ★2176CPRE #74 (p.25, PUN 503), 2176CPRE #1 (p.14, PUN 701), 2176CPRE #16 (p.17, SST 501), 2176CPRE #23 (p.18, PUN 502), 2176CPRE #30 (p.19, PUN 702), 2176CPRE #31 (p.19, PUN 401), 2176CPRE #34 (p.19, PUN 602), 2176CPRE #35 (p.20, PUN 401), 2176CPRE #42 (p.20, SST 601), 2176CPRE #46 (p.21, SST 501), 2176CPRE #61 (p.24, PUN 401), 2176CPRE #63 (p.24, SST 501), 2176CPRE #70 (p.25, SST 501), PT2 #2 (p.4, PUN 503), PT2 #3 (p.4, SST 401), PT2 #8 (p.5, SST 301), PT2 #11 (p.6, PUN 701), PT2 #15 (p.7, PUN 503), PT2 #18 (p.8, PUN 603), PT2 #36 (p.12, PUN 401), PT2 #38 (p.12, PUN 602), PT2 #46 (p.14, PUN 701) |
+
+The G19 rules are not yet in this map: the ★ marks were set against
+the 25MC1 misses only, and the "what a part does" family has no
+official questions listed, although the JSON files already code 21
+TOD questions across the two tests. Re-mark ★ and add a TOD family to
+the JSON, then regenerate `officials.js`.
 
 Gaps: neither test repeats the Granted-vs-Conversely confusion or "that
 which" exactly, and Practice Test 2 has no relative-clause questions at

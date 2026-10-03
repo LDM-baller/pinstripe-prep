@@ -94,25 +94,35 @@ mock.
 1. Make sure the new misses are in `ERRORS.md` and the bank (see the ACT
    folder's README for how). Don't add them here first.
 2. If a miss is a rule not in `RULES`, add an entry: `short` label, a `tip`
-   written to Levi in plain words, and `missed` naming the test question.
+   written to Levi in plain words, `missed` naming the test question, and
+   `fam`, the skill family (see `research/SKILLS.md`). Several rules can
+   share a family; Road Trip shows one panel per family, under the first
+   rule's label. Also add the miss to `MISSES` in `about.js`.
 3. Write 3 to 5 rematches per miss into `QUESTIONS`, and a few cousins into
    `cousins.js` for any family that is new, following the
    bank's recipe for that row and the rules on tab 3. In short:
    - new sentence, new topic; never reuse ACT text. Baseball and Yankees
      topics keep it fun, but every fact must be true. If you're not sure of
      a fact, use a generic baseball scene instead.
-   - four choices, first is always "No Change"; exactly one right answer
+   - four choices, first is always "No Change"; exactly one right answer.
+     The exception is a question about what a part does (what deleting it
+     loses, keep or delete): those have four descriptions and no No Change,
+     like the real test, and the app keeps them in written order, so vary
+     where the answer sits
    - `trap` is the index of the choice that repeats the mistake he made
    - No Change is right about one time in four; vary the answer position
    - `why` and `trapWhy` are one sentence each, talking to Levi
    - `from` names the real question it rematches, e.g. "25MC1 #21"
-   - new `id`s only; stats are keyed on them
+   - new `id`s only; stats are keyed on them. Questions can go anywhere
+     in the arrays: report links carry their own id list (`v: 2`), and
+     the older `v: 1` links decode through the frozen `V1_IDS` in
+     `about.js`. Never edit `V1_IDS`
 4. If the rule was missed more than once, add it to `TEST_MISSES` in
    `game.js` so it comes up more.
 5. Check it: `node --check game.js`, then answer every new question
    yourself without looking at the key. If two choices could be defended,
    rewrite it.
-6. Bump `?v=` on both script tags in `index.html` so phones pick up the
+6. Bump `?v=` on every script tag in `index.html` so phones pick up the
    new files, then deploy.
 
 ## Deploying

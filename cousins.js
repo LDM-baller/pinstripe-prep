@@ -3,7 +3,8 @@
 // Career Readiness Standard it tests (ACT's own skill codes, from
 // act.org/content/dam/act/unsecured/documents/CCRS-EnglishStandards.pdf).
 // Same fields as questions.js, with kind: "cousin". Choice order after
-// "No Change" is shuffled at play time, so write them in any order.
+// "No Change" is shuffled at play time, so write them in any order. Questions
+// with no "No Change" keep their written order, so vary where the answer sits.
 
 QUESTIONS.push(
   // ---------- Subject-verb agreement family ----------
@@ -376,5 +377,57 @@ QUESTIONS.push(
     answer: 1, trap: 0,
     why: "One subject (the shortstop) doing two things (fielded and threw) takes no comma before and.",
     trapWhy: "A comma before and is right only when a full sentence follows. \"Threw to first base\" has no subject of its own.",
+  },
+
+  // ---------- What a part does family (purpose, relevance, keep or delete) ----------
+  {
+    id: "c-d1", kind: "cousin", code: "TOD 501", skill: "delete a sentence that leaves the paragraph's focus",
+    rule: "What a sentence part does (deletion questions)", from: "ACT TOD 501",
+    passage: "The grounds crew starts work hours before the first pitch. First, they drag the infield dirt smooth. [[The first night game in the major leagues was played in 1935.]] Then they water the dirt so it won't turn to dust, and they chalk the foul lines.",
+    stem: "The writer is considering deleting the underlined sentence. Should the sentence be kept or deleted?",
+    choices: ["Kept, because it adds a historical fact that makes the paragraph more interesting.", "Kept, because it explains why the crew waters the infield dirt.", "Deleted, because it interrupts the paragraph's step-by-step description of the crew's work.", "Deleted, because it contradicts the claim that the crew starts work hours before the first pitch."],
+    answer: 2, trap: 0,
+    why: "The paragraph walks through the crew's routine in order, and a fact about the first night game breaks that sequence.",
+    trapWhy: "\"Interesting\" isn't enough. Ask what the sentence does for THIS paragraph; true and interesting can still be off topic.",
+  },
+  {
+    id: "c-d2", kind: "cousin", code: "TOD 602", skill: "a detail that supports a later point",
+    rule: "What a sentence part does (deletion questions)", from: "ACT TOD 602",
+    passage: "The old minor-league ballpark had only eight hundred seats, [[most of them close enough to the field that fans could hear the players talk.]] Fans there felt like part of the game in a way that is hard to find in a forty-thousand-seat stadium.",
+    stem: "If the writer were to delete the underlined portion (adjusting the punctuation as needed), the paragraph would primarily lose:",
+    choices: ["a complaint that the players were too loud.", "proof that small ballparks are better than large stadiums.", "an explanation of why the ballpark was later torn down.", "a detail that supports the later point that fans there felt like part of the game."],
+    answer: 3, trap: 1,
+    why: "Sitting close enough to hear the players is what makes the next sentence believable. The phrase sets up a later point.",
+    trapWhy: "One detail about one ballpark proves nothing about all small parks, and \"better\" goes further than the paragraph does. Like G19 #23: name the plain job, not a verdict.",
+  },
+  {
+    id: "c-d3", kind: "cousin", code: "TOD 504", skill: "pick the detail that fits a purpose",
+    rule: "What a sentence part does (deletion questions)", from: "ACT TOD 504",
+    passage: "Ballpark organists play short tunes to fire up the crowd. When a home player steps to the plate with runners on base, the organist might [[play some music]].",
+    stem: "Given that all the choices are true, which one gives the most specific example of how an organist fires up the crowd?",
+    choices: ["No Change", "pound out the familiar \"Charge!\" fanfare as fans shout along", "do something on the keys", "sit at an organ that was installed decades ago"],
+    answer: 1, trap: 0,
+    why: "The \"Charge!\" fanfare is a specific tune, and the fans shouting along shows the crowd getting fired up.",
+    trapWhy: "\"Play some music\" fits the sentence fine, but it's vague. When the question asks for the most specific example of firing up the crowd, vague choices miss, and so does a specific detail that has nothing to do with the crowd.",
+  },
+  {
+    id: "c-d4", kind: "cousin", code: "TOD 601", skill: "keep a sentence that supports the point",
+    rule: "What a sentence part does (deletion questions)", from: "ACT TOD 601",
+    passage: "Catchers wear more protective gear than any other player on the field. [[A foul ball can glance off the bat and hit a catcher before he has time to react.]] Without a mask, a chest protector, and shin guards, few catchers could safely crouch behind the plate for nine innings.",
+    stem: "The writer is considering deleting the underlined sentence. Should the sentence be kept or deleted?",
+    choices: ["Kept, because it shows that catching is the most dangerous job in sports.", "Kept, because it gives a reason catchers need so much protective gear.", "Deleted, because it shifts the focus from catchers to hitters.", "Deleted, because it repeats the claim that catchers wear more gear than other players."],
+    answer: 1, trap: 0,
+    why: "The paragraph is about why catchers wear so much gear, and a foul ball they can't react to is a reason.",
+    trapWhy: "Right answer (keep), wrong reason. \"The most dangerous job in sports\" overstates it; the sentence never compares catching to anything.",
+  },
+  {
+    id: "c-d5", kind: "cousin", code: "TOD 603", skill: "a phrase that conveys a feeling",
+    rule: "What a sentence part does (deletion questions)", from: "ACT TOD 603",
+    passage: "With the home team down by a run and two outs in the ninth, its best hitter lifted a long fly ball to center. It was caught at the wall, and the crowd [[left the stadium]].",
+    stem: "Which choice most clearly conveys the crowd's disappointment?",
+    choices: ["No Change", "filed out in near silence", "spilled into the streets, singing and cheering", "exited through several different gates"],
+    answer: 1, trap: 0,
+    why: "\"Filed out in near silence\" shows the mood: the quiet is the letdown.",
+    trapWhy: "\"Left the stadium\" is correct and plain, but it doesn't do the job the question asks for. Check the purpose in the question before you pick.",
   },
 );

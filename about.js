@@ -12,15 +12,19 @@ const band = code => BANDS[(code.match(/\d/) || [])[0]] || "";
 const CATEGORY = { USG: "Conventions (usage)", SST: "Conventions (sentence structure)", PUN: "Conventions (punctuation)",
   KLA: "Knowledge of Language", ORG: "Production of Writing", TOD: "Production of Writing" };
 
-// The real misses behind each family, as he answered them on 25MC1.
+// The real misses behind each family, as he answered them on the practice tests.
 const MISSES = {
-  "Subject-verb agreement": [["#9", "\"Partnering with … have enabled\" — chose have, needed has", "USG 402"],
-                             ["#21", "\"the last one of the notes fade\" — chose fade, needed fades", "USG 701"]],
-  "Pronoun and verb agreement": [["#5", "made \"trees die\" plural but left \"its\" singular", "USG 602"]],
-  "Tone and register": [["#6", "picked the casual \"churn out\" in a formal essay", "KLA 503"]],
-  "Transitions": [["#30", "picked \"Granted\" (concession) where \"Conversely\" (contrast) fit", "ORG 501"]],
-  "Relative pronouns": [["#31", "picked the doubled \"that which\" instead of \"that\"", "SST 401"]],
-  "Paired dashes around an interruption": [["#33", "opened an interruption with a comma and never closed it", "PUN 503"]],
+  "Subject-verb agreement": [["25MC1 #9", "\"Partnering with … have enabled\" — chose have, needed has", "USG 402"],
+                             ["25MC1 #21", "\"the last one of the notes fade\" — chose fade, needed fades", "USG 701"]],
+  "Pronoun and verb agreement": [["25MC1 #5", "made \"trees die\" plural but left \"its\" singular", "USG 602"]],
+  "Tone and register": [["25MC1 #6", "picked the casual \"churn out\" in a formal essay", "KLA 503"]],
+  "Transitions": [["25MC1 #30", "picked \"Granted\" (concession) where \"Conversely\" (contrast) fit", "ORG 501"]],
+  "Relative pronouns": [["25MC1 #31", "picked the doubled \"that which\" instead of \"that\"", "SST 401"]],
+  "Paired dashes around an interruption": [["25MC1 #33", "opened an interruption with a comma and never closed it", "PUN 503"]],
+  "Unnecessary punctuation": [["G19 #1", "put a comma between a title and the name it goes with (\"Vermont farmer, Wilson Bentley\")", "PUN 701"],
+                              ["G19 #20", "added a comma after a long subject, cutting it off from its verb", "PUN 501"]],
+  "Semicolons, dashes and colons": [["G19 #7", "picked a semicolon with a fragment after it where a dash introduced an explanation", "PUN 702"]],
+  "What a sentence part does (deletion questions)": [["G19 #23", "read a judgment into a phrase that only explained why one side looks red", "TOD 502"]],
 };
 
 const avg = (h, ab) => ab ? (h / ab).toFixed(3).replace(/^0/, "") : "—";
@@ -134,7 +138,7 @@ function render(S, snap) {
 
     <h3 class="sec">Where the questions come from</h3>
     <div class="panel prose">
-      <p>Everything starts with the <b>8 English questions Levi missed on 25MC1</b>, the practice ACT in ACT's free official guide for 2025–26. Seven were confirmed against ACT's answer key; one (#15) is unresolved and not used.</p>
+      <p>Everything starts with the <b>English questions Levi missed on real practice ACTs</b>: 8 on 25MC1, the practice ACT in ACT's free official guide for 2025–26, and 4 on G19, the April 2024 ACT, which Mark assigned as a 13-minute mini-test. Eleven were confirmed against ACT's answer keys; one (25MC1 #15) is unresolved and not used.</p>
       <details><summary><b>Rematches</b> · ${QUESTIONS.filter(q => q.kind === "rematch").length} questions</summary>
         <p>Each one is a new sentence on the <i>same narrow rule</i> as a real miss, and one wrong answer is always the same trap he fell for. Written from the notes in his wrong-answer bank: what the question tests, the trap, and how to build a new one. About one in four has "No Change" as the answer, like the real test.</p></details>
       <details><summary><b>New pitches</b> · ${QUESTIONS.filter(q => q.kind === "cousin").length} questions</summary>
@@ -151,7 +155,7 @@ function render(S, snap) {
       ${Object.entries(RULES).map(([r, info]) => {
         const codes = [...new Set(QUESTIONS.filter(q => q.rule === r).map(q => q.code))].sort();
         return `<details><summary><b>${info.short}</b></summary>
-          ${(MISSES[r] || []).map(([n, what, code]) => `<p>Missed 25MC1 ${n}: ${esc(what)}. ACT standard <b>${code}</b> (${CATEGORY[code.slice(0, 3)]}, ${band(code)} band).</p>`).join("")}
+          ${(MISSES[r] || []).map(([n, what, code]) => `<p>Missed ${n}: ${esc(what)}. ACT standard <b>${code}</b> (${CATEGORY[code.slice(0, 3)]}, ${band(code)} band).</p>`).join("")}
           <p>Standards drilled in this family: ${codes.map(c => `<span class="code">${c}</span>`).join(" ")}</p></details>`;
       }).join("")}
       <p class="fine">Source: <a href="https://www.act.org/content/dam/act/unsecured/documents/CCRS-EnglishStandards.pdf" target="_blank" rel="noopener">ACT College & Career Readiness Standards: English</a>.</p>
@@ -169,7 +173,7 @@ function famHTML(S, { r, info, t }) {
   return `<details class="fam"><summary>
       <div class="fam-top"><b>${info.short}</b><span class="ba">${avg(t.h, t.ab)}</span></div>
       ${bar(t.h, t.ab)}
-      <div class="fine">${t.h}-for-${t.ab} · ${t.seenQs} of ${t.total} questions seen · real miss: 25MC1 ${info.missed.replace("25MC1 ", "")}</div>
+      <div class="fine">${t.h}-for-${t.ab} · ${t.seenQs} of ${t.total} questions seen · real miss: ${info.missed}</div>
     </summary>
     <div class="fam-body">
       <div class="split"><span>Rematches <b>${avg(rem.h, rem.ab)}</b> <i>${rem.h}-for-${rem.ab}</i></span><span>New pitches <b>${avg(cou.h, cou.ab)}</b> <i>${cou.h}-for-${cou.ab}</i></span></div>
@@ -220,7 +224,8 @@ function roadHTML(road) {
   const done = OFFICIAL.filter(o => road[o.t + o.q]);
   if (!done.length) return `<p class="fine">None logged yet. These are real ACT questions he does on paper from ACT's PDFs, then checks in the app.</p>`;
   const name = t => OFFICIAL_TESTS.find(x => x.key === t).name.replace("ACT ", "");
-  return `<div class="panel">${Object.entries(RULES).map(([r, info]) => {
+  // One row per family: several rules can share a family (and its official questions).
+  return `<div class="panel">${Object.entries(RULES).filter(([r, info]) => Object.keys(RULES).find(k => RULES[k].fam === info.fam) === r).map(([r, info]) => {
     const list = done.filter(o => o.fam === info.fam); if (!list.length) return "";
     const h = list.filter(o => road[o.t + o.q] === "hit").length;
     return `<details class="q"><summary><span class="qlabel"><b>${info.short}</b> ${h}-for-${list.length}</span><span class="ba sm" style="margin-left:auto">${avg(h, list.length)}</span></summary>
@@ -229,14 +234,20 @@ function roadHTML(road) {
 }
 
 // ---------- sharing ----------
-// Compact form: history rows become arrays keyed by question index.
+// Compact form: history rows become arrays keyed by an index into the link's own
+// id list (v2). v1 links indexed into QUESTIONS as it stood when they were made,
+// which is the frozen V1_IDS below, so adding questions never breaks an old link.
+const V1_IDS = ["sva1","sva2","sva3","sva4","sva5","sva6","sva7","sva8","pa1","pa2","pa3","pa4","pa5","tr1","tr2","tr3","tr4","tr5",
+  "tn1","tn2","tn3","tn4","tn5","rp1","rp2","rp3","rp4","rp5","pd1","pd2","pd3","pd4","pd5","c-sva1","c-sva2","c-sva3","c-sva4","c-sva5",
+  "c-sva6","c-pr1","c-pr2","c-pr3","c-pr4","c-pr5","c-pr6","c-t1","c-t2","c-t3","c-t4","c-t5","c-t6","c-tr1","c-tr2","c-tr3","c-tr4",
+  "c-tr5","c-tr6","c-r1","c-r2","c-r3","c-r4","c-r5","c-r6","c-p1","c-p2","c-p3","c-p4","c-p5","c-p6"];
 function pack(S) {
-  const ids = QUESTIONS.map(q => q.id), t0 = (S.hist || [])[0]?.d || Date.now();
-  return { v: 1, at: Date.now(), w: S.w, l: S.l, t0, q: S.q, road: S.road || {},
-    h: (S.hist || []).map(a => [ids.indexOf(a.id), a.c, a.r, a.s, Math.round((a.d - t0) / 60000), a.m, a.t ?? null]) };
+  const hist = S.hist || [], ids = [...new Set(hist.map(a => a.id))], t0 = hist[0]?.d || Date.now();
+  return { v: 2, at: Date.now(), w: S.w, l: S.l, t0, q: S.q, road: S.road || {}, ids,
+    h: hist.map(a => [ids.indexOf(a.id), a.c, a.r, a.s, Math.round((a.d - t0) / 60000), a.m, a.t ?? null]) };
 }
 function unpack(p) {
-  const ids = QUESTIONS.map(q => q.id);
+  const ids = p.v === 1 ? V1_IDS : p.ids || [];
   return { S: { q: p.q || {}, w: p.w, l: p.l, road: p.road || {},
     hist: (p.h || []).filter(a => ids[a[0]]).map(a => ({ id: ids[a[0]], c: a[1], r: a[2], s: a[3], d: p.t0 + a[4] * 60000, m: a[5], ...(a[6] != null ? { t: a[6] } : {}) })) }, at: p.at };
 }

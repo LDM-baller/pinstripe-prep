@@ -150,7 +150,7 @@ function home() {
 // ---------- picking questions ----------
 // Weakest rules come up most: weight by the misses on the real test, then by
 // this app's own record, and bring Film Room questions back more often.
-const TEST_MISSES = { "Subject-verb agreement": 2 };
+const TEST_MISSES = { "Subject-verb agreement": 2, "Unnecessary punctuation": 2 };
 function pick(pool, used) {
   let cand = pool.filter(q => !used.has(q.id));
   if (!cand.length) { used.clear(); cand = pool.slice(); }
@@ -243,9 +243,10 @@ function nextAtBat() {
   drawBoard();
   const letters = G.abNum % 2 ? ["A", "B", "C", "D"] : ["F", "G", "H", "J"];
   // "No Change" stays first and "Delete" stays last, like the real test; the rest are shuffled.
+  // Questions without a "No Change" (what-would-be-lost, keep-or-delete) keep their written order.
   const del = [1, 2, 3].filter(k => /^Delete/.test(q.choices[k]));
   const rest = [1, 2, 3].filter(k => !del.includes(k)).sort(() => Math.random() - 0.5);
-  G.order = [0, ...rest, ...del];
+  G.order = q.choices[0] === "No Change" ? [0, ...rest, ...del] : [0, 1, 2, 3];
   G.letters = [0, 1, 2, 3].map(k => letters[G.order.indexOf(k)]);
   const passage = q.passage.replace(/\[\[(.+?)\]\]/, (_, u) => `<u>${u}</u><span class="num">${G.abNum}</span>`);
   $("#stage").innerHTML = `
@@ -504,7 +505,7 @@ function roadTrip(showPt2) {
     <p class="center" style="text-align:left">Road record: ${hits}-for-${done.length}</p>
     ${tests.map(t => `<a class="btn" style="text-decoration:none;margin:8px 0" href="${t.url}" target="_blank" rel="noopener">${t.name} PDF ↗<small>${t.sub}</small></a>`).join("")}
     ${showPt2 ? "" : `<button class="btn" id="pt2" style="width:100%;margin-top:8px">+ Also show Practice Test 2 <small>ask Mark first: it may be saved for a mock</small></button>`}
-    ${Object.entries(RULES).map(([r, info]) => {
+    ${Object.entries(RULES).filter(([r, info]) => famRule(info.fam) === r).map(([r, info]) => {  // one panel per family
       const list = OFFICIAL.filter(o => o.fam === info.fam && tests.some(t => t.key === o.t))
         .sort((a, b) => (b.core - a.core) || a.t.localeCompare(b.t) || a.q - b.q);
       if (!list.length) return "";

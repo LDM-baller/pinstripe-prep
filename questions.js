@@ -12,7 +12,8 @@
 //   from      the real test question it is modelled on
 //   passage   the sentence(s); the underlined part goes in [[double brackets]]
 //   stem      the question asked, copied from the bank's "Question asked"
-//   choices   exactly four; the first is always "No Change"
+//   choices   exactly four; the first is always "No Change", except on questions
+//             that ask what a part does (the real test has none there either)
 //   answer    index 0-3 of the right choice
 //   trap      index 0-3 of the choice that is Levi's trap
 //   why       one sentence: why the answer is right
@@ -48,6 +49,21 @@ const RULES = {
     short: "Punctuation", fam: "PUNC",
     tip: "An interruption needs a MATCHING pair: two dashes, two commas, or two parentheses. Open with one, close with the same. Then check the pair is around the right words.",
     missed: "25MC1 #33",
+  },
+  "Unnecessary punctuation": {
+    short: "Extra Commas", fam: "PUNC",
+    tip: "Every comma needs a reason. When a bare title is stuck to a name as its label (\"pitching coach Dan Ortiz,\" with no \"the,\" \"a,\" \"his\" or \"team's\" in front), no comma goes between them: cover the name, and if the sentence breaks, the name stays bare. (A comma that ends an opening phrase is a different job: \"As team captain, Derek Jeter...\") And no single comma goes between a subject and its verb, however long the subject is. (The closing comma of a pair around an extra phrase is fine.) Extra commas feel safe. They aren't.",
+    missed: "G19 #1 and #20",
+  },
+  "Semicolons, dashes and colons": {
+    short: "Semicolons & Colons", fam: "PUNC",
+    tip: "When a semicolon joins two parts of a sentence (not items in a list), BOTH sides have to be full sentences. Cover each side and read it alone: if either one can't stand as a sentence, the semicolon is wrong. After a complete sentence, a colon or a dash can introduce words that explain or spell out something in that sentence. \"; this being\" and \"; which is\" sound formal and are still fragments.",
+    missed: "G19 #7",
+  },
+  "What a sentence part does (deletion questions)": {
+    short: "What a Part Does", fam: "TOD",
+    tip: "Before you look at the choices, say what the underlined words DO in their sentence and paragraph: give a cause? an example? a contrast? a definition? set up a later point? Pick the choice that names that job plainly. If a choice reads a judgment or ranking into words that don't make one, or names something the words never say, cross it out. (If the words really do carry a feeling or opinion, naming it can be the job.)",
+    missed: "G19 #23",
   },
 };
 
@@ -359,5 +375,174 @@ const QUESTIONS = [
     answer: 1, trap: 2,
     why: "Parentheses work as a pair too: open and close with the same kind of mark.",
     trapWhy: "Opens with a parenthesis and never closes it. One mark is never enough for an interruption.",
+  },
+
+  // ---------- Unnecessary punctuation (missed twice: G19 #1 and #20) ----------
+  {
+    id: "up1", kind: "rematch", code: "PUN 701", skill: "no comma between a title and its name", rule: "Unnecessary punctuation", from: "G19 #1",
+    passage: "The players credit their first league title in a decade[[, to the work of pitching coach]] Dan Ortiz.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", ", to the work of pitching coach,", "to the work of pitching coach,", "to the work of pitching coach"],
+    answer: 3, trap: 2,
+    why: "\"Credit their title to the work\" takes no comma, and \"pitching coach Dan Ortiz\" is one unit, so no comma inside it either.",
+    trapWhy: "This fixes the first comma but adds one before the name. That's the G19 #1 trap: cover \"Dan Ortiz\" and \"the work of pitching coach\" breaks, so the name is essential.",
+  },
+  {
+    id: "up2", kind: "rematch", code: "PUN 701", skill: "no comma between a title and its name", rule: "Unnecessary punctuation", from: "G19 #1",
+    passage: "A framed letter from [[longtime equipment manager Lou Brennan]] still hangs above the lockers in the home clubhouse.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "longtime equipment manager, Lou Brennan", "longtime equipment manager Lou Brennan,", "longtime, equipment manager Lou Brennan"],
+    answer: 0, trap: 1,
+    why: "\"Longtime equipment manager Lou Brennan\" is one unit, a title stuck to a name, and the whole subject, \"A framed letter from ... Lou Brennan,\" runs straight to \"still hangs.\" No commas anywhere. No Change.",
+    trapWhy: "A comma before the name looks like it's setting something off, but the title and the name are one unit. Same comma you added on G19 #1.",
+  },
+  {
+    id: "up3", kind: "rematch", code: "PUN 602", skill: "the flip: a description after a name needs a pair of commas", rule: "Unnecessary punctuation", from: "G19 #1 (flipped)",
+    passage: "Ana [[Ruiz the team's head groundskeeper has]] used the same infield dirt mix for twenty years.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "Ruiz, the team's head groundskeeper, has", "Ruiz, the team's head groundskeeper has", "Ruiz the team's head groundskeeper, has"],
+    answer: 1, trap: 0,
+    why: "Her full name already tells you exactly who she is, so \"the team's head groundskeeper\" is extra information, and extra information is set off on both sides with matching marks: here, a pair of commas.",
+    trapWhy: "No comma goes between a bare title and the name it labels (\"groundskeeper Ana Ruiz\"). Here the description comes after a name that already identifies her, so it's extra and needs a pair: the other side of G19 #1.",
+  },
+  {
+    id: "up4", kind: "rematch", code: "PUN 701", skill: "no comma before an essential name (or between a verb and its object)", rule: "Unnecessary punctuation", from: "G19 #1",
+    passage: "After the final out, the coach handed[[, the game ball to senior catcher]] Jordan Hayes.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "the game ball to senior catcher,", ", the game ball to senior catcher,", "the game ball to senior catcher"],
+    answer: 3, trap: 1,
+    why: "No comma goes between \"handed\" and what he handed, and \"senior catcher Jordan Hayes\" is one unit. No commas.",
+    trapWhy: "This drops the comma after \"handed\" but puts one before the name. That's your G19 #1 answer: the title and the name belong together.",
+  },
+  {
+    id: "up5", kind: "rematch", code: "PUN 701", skill: "no comma between a title and its name", rule: "Unnecessary punctuation", from: "G19 #1",
+    passage: "His teammates voted [[shortstop, Luis Ortega]] the team's most valuable player for the second straight season.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "shortstop Luis Ortega", ", shortstop Luis Ortega", "shortstop, Luis Ortega,"],
+    answer: 1, trap: 0,
+    why: "\"Shortstop Luis Ortega\" is one unit, and it's the object of \"voted.\" No commas.",
+    trapWhy: "A comma between a bare title and the name is the G19 #1 trap. Cover the name: \"voted shortstop the team's most valuable player\" doesn't work, so the name is essential.",
+  },
+  {
+    id: "up6", kind: "rematch", code: "PUN 501", skill: "no comma inside a long subject", rule: "Unnecessary punctuation", from: "G19 #20",
+    passage: "As the sun drops behind the upper [[deck, long, dark shadows]] across the infield grass creep toward the outfield.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "deck long, dark shadows,", "deck, long, dark, shadows", "deck, long, dark shadows,"],
+    answer: 0, trap: 3,
+    why: "A comma ends the opening clause, a comma sits between the two equal adjectives (\"long and dark\" works), and nothing comes between \"shadows across the infield grass\" and its verb, \"creep.\" No Change.",
+    trapWhy: "Every right comma plus one extra after \"shadows,\" which cuts the subject off from the rest of it. Exactly the G19 #20 move.",
+  },
+  {
+    id: "up7", kind: "rematch", code: "PUN 501", skill: "no comma inside a long subject", rule: "Unnecessary punctuation", from: "G19 #20",
+    passage: "While the anthem singer holds the final [[note, a huge, rippling flag,]] in center field draws every eye in the ballpark.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "note: a huge, rippling flag", "note, a huge, rippling, flag", "note, a huge, rippling flag"],
+    answer: 3, trap: 0,
+    why: "The subject is \"a huge, rippling flag in center field\" and the verb is \"draws.\" Keep the comma after the opening clause and between the equal adjectives (\"huge and rippling\" works); nothing after \"flag.\"",
+    trapWhy: "The comma after \"flag\" cuts \"flag\" off from the rest of its subject (\"in center field\") and from its verb, \"draws.\" A pause when you read it aloud is not a reason for a comma.",
+  },
+  {
+    id: "up8", kind: "rematch", code: "PUN 501", skill: "no comma inside a long subject", rule: "Unnecessary punctuation", from: "G19 #20",
+    passage: "Because the bullpen was [[empty, the tired, sore-armed pitcher,]] on the mound had to finish the game himself.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "empty, the tired, sore-armed pitcher", "empty; the tired, sore-armed pitcher", "empty, the tired, sore-armed, pitcher"],
+    answer: 1, trap: 0,
+    why: "Comma after the \"Because\" clause, comma between \"tired\" and \"sore-armed\" (\"tired and sore-armed\" works), and then the subject runs straight through \"on the mound\" to \"had.\"",
+    trapWhy: "The comma after \"pitcher\" cuts the subject in half. Same extra comma you added on G19 #20.",
+  },
+  {
+    id: "up9", kind: "rematch", code: "PUN 501", skill: "no comma inside a long subject", rule: "Unnecessary punctuation", from: "G19 #20",
+    passage: "When the last out settles into the left fielder's [[glove, loud, joyful cheers]] from the bleachers echo through the stadium.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "glove, loud, joyful cheers,", "glove; loud, joyful cheers", "glove, loud, joyful, cheers"],
+    answer: 0, trap: 1,
+    why: "Opening clause, comma; two equal adjectives (\"loud and joyful\" works), comma; then \"cheers from the bleachers\" goes straight to \"echo.\" No Change.",
+    trapWhy: "The comma after \"cheers\" cuts it off from \"from the bleachers\" and from its verb, \"echo.\" The G19 #20 trap: it keeps every right comma and adds one wrong one.",
+  },
+  {
+    id: "up10", kind: "rematch", code: "PUN 501", skill: "no comma between a long subject and its verb", rule: "Unnecessary punctuation", from: "G19 #20",
+    passage: "Since the town's little ballpark first opened, [[thousands of loyal, cheering fans,]] have filled its wooden bleachers every summer.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "thousands of loyal, cheering fans", "thousands, of loyal, cheering fans", "thousands of loyal, cheering, fans"],
+    answer: 1, trap: 0,
+    why: "\"Thousands of loyal, cheering fans\" is the subject and \"have filled\" is the verb. Nothing goes between them.",
+    trapWhy: "The comma after \"fans\" puts one mark between the subject and the verb, the G19 #20 trap. Find the subject and the verb, then make sure no single comma separates them.",
+  },
+
+  // ---------- Semicolons, dashes and colons (G19 #7) ----------
+  {
+    id: "sc1", kind: "rematch", code: "PUN 702", skill: "dash to introduce an explanation", rule: "Semicolons, dashes and colons", from: "G19 #7",
+    passage: "Between batters, the reliever reached for the rosin [[bag, it is]] a small cloth sack of powder that helps a pitcher grip the ball.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "bag; which is", "bag—", "bag;"],
+    answer: 2, trap: 1,
+    why: "Everything after the mark explains what a rosin bag is, and after a complete sentence a dash can introduce an explanation of something in it.",
+    trapWhy: "\"Which is a small cloth sack...\" can't stand on its own, so a semicolon can't go in front of it. Same kind of trap as G19 #7: formal-sounding, still a fragment.",
+  },
+  {
+    id: "sc2", kind: "rematch", code: "PUN 702", skill: "colon to introduce an explanation", rule: "Semicolons, dashes and colons", from: "G19 #7",
+    passage: "The scouting report on the young hitter listed only one real [[weakness; this being]] his trouble with high fastballs.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "weakness:", "weakness;", "weakness, it was"],
+    answer: 1, trap: 0,
+    why: "The first part is a complete sentence and the rest names the weakness, which is exactly what a colon is for.",
+    trapWhy: "\"This being his trouble with high fastballs\" isn't a sentence, so it can't sit after a semicolon. It's the answer you picked on G19 #7.",
+  },
+  {
+    id: "sc3", kind: "rematch", code: "PUN 604", skill: "the flip: semicolon between two full sentences", rule: "Semicolons, dashes and colons", from: "G19 #7 (flipped)",
+    passage: "The rain delay lasted nearly two [[hours; the]] grounds crew kept the tarp on the field the entire time.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "hours, the", "hours; during which the", "hours the"],
+    answer: 0, trap: 2,
+    why: "Both sides are complete sentences (\"The rain delay lasted nearly two hours\" and \"the grounds crew kept the tarp on the field\"), so the semicolon is right. No Change.",
+    trapWhy: "\"During which the grounds crew kept the tarp...\" can't stand alone, so the semicolon in front of it is wrong. When a semicolon joins two parts of a sentence (not items in a list), BOTH sides have to be full sentences.",
+  },
+  {
+    id: "sc4", kind: "rematch", code: "PUN 702", skill: "colon, not a semicolon, before an explanation", rule: "Semicolons, dashes and colons", from: "G19 #7",
+    passage: "Every major-league infield uses the same official base [[spacing; ninety]] feet from each base to the next.",
+    stem: "Which choice makes the sentence most grammatically acceptable?",
+    choices: ["No Change", "spacing: ninety", "spacing. Ninety", "spacing; being ninety"],
+    answer: 1, trap: 0,
+    why: "\"Ninety feet from each base to the next\" spells out the spacing, and a colon introduces that kind of explanation after a complete sentence.",
+    trapWhy: "A semicolon joining two parts of a sentence needs a full sentence after it, and \"ninety feet from each base to the next\" has no verb. Read the right side alone and it falls apart.",
+  },
+
+  // ---------- What a sentence part does: deletion questions (G19 #23) ----------
+  // No "No Change" here, like the real test; choices keep their written order.
+  {
+    id: "del1", kind: "rematch", code: "TOD 502", skill: "deletion: the phrase gives a cause", rule: "What a sentence part does (deletion questions)", from: "G19 #23",
+    passage: "Most of a ballpark is crowded with seats, signs, and bright colors. The batter's eye, the area just beyond the center-field fence, is different. This dark patch, [[which is kept clear of bright signs and advertising,]] gives hitters a plain background against which to pick up a white baseball.",
+    stem: "If the writer were to delete the underlined portion (adjusting the punctuation as needed), the essay would primarily lose:",
+    choices: ["a description of how hitters train their eyes to follow a pitch.", "a suggestion that the seats beyond center field are the worst in the ballpark.", "a detail that helps explain why the batter's eye gives hitters a plain background.", "an explanation of why every ballpark is required to have a batter's eye."],
+    answer: 2, trap: 1,
+    why: "Keeping out bright signs and ads is part of the reason the background is plain. The phrase gives a cause, and that's what you'd lose.",
+    trapWhy: "Nothing in the sentence ranks the seats. That's the G19 #23 trap: reading a judgment into words that only explain something.",
+  },
+  {
+    id: "del2", kind: "rematch", code: "TOD 502", skill: "deletion: the phrase gives an example", rule: "What a sentence part does (deletion questions)", from: "G19 #23",
+    passage: "Ballpark menus have grown far beyond hot dogs and peanuts. Many stadiums now sell a signature dish that visiting fans make a point of trying, [[such as the garlic fries at the Giants' ballpark in San Francisco.]]",
+    stem: "If the writer were to delete the underlined portion (adjusting the punctuation as needed), the essay would primarily lose:",
+    choices: ["a specific example of the kind of dish the sentence describes.", "an explanation of why stadium menus have changed.", "a description of how garlic fries are made.", "a claim that San Francisco has the best food in baseball."],
+    answer: 0, trap: 3,
+    why: "\"Such as\" signals an example, and the garlic fries are one example of a signature dish.",
+    trapWhy: "The sentence never says anyone's food is the best. Picking a judgment the words don't make is the G19 #23 trap.",
+  },
+  {
+    id: "del3", kind: "rematch", code: "TOD 502", skill: "deletion: the phrase sets up a contrast", rule: "What a sentence part does (deletion questions)", from: "G19 #23",
+    passage: "Many young players don't use wooden bats in their regular-season games until they turn professional. Most college hitters swing metal or composite bats, [[while major- and minor-league rules allow only wood,]] so even a star college slugger has to adjust to a less forgiving bat after the draft.",
+    stem: "If the writer were to delete the underlined portion (adjusting the punctuation as needed), the essay would primarily lose:",
+    choices: ["the main reason most college players never reach the major leagues.", "a suggestion that college bats give hitters an unfair advantage.", "a description of how wooden bats are made.", "a contrast between the bats allowed in college and in professional baseball."],
+    answer: 3, trap: 1,
+    why: "\"While\" sets college against the pros: metal or composite bats in college, only wood in the pros. That contrast is what you'd lose.",
+    trapWhy: "\"Unfair\" is a judgment the sentence never makes. Name the plain job of the phrase, not an opinion you could read into it.",
+  },
+  {
+    id: "del4", kind: "rematch", code: "TOD 502", skill: "deletion: the phrase defines a term", rule: "What a sentence part does (deletion questions)", from: "G19 #23",
+    passage: "Many fans still keep score with a pencil and a printed scorecard. One fan's card might show \"6-4-3\" on a batter's line, [[shorthand for a double play that goes from the shortstop to the second baseman to the first baseman.]]",
+    stem: "If the writer were to delete the underlined portion (adjusting the punctuation as needed), the essay would primarily lose:",
+    choices: ["a complete explanation of how to keep score.", "a definition of a scoring code the reader might not know.", "a suggestion that keeping score by hand is better than following the game on a phone.", "a description of where fans can buy scorecards."],
+    answer: 1, trap: 2,
+    why: "The phrase tells you what \"6-4-3\" means. It defines a term.",
+    trapWhy: "Nothing here compares pencils to phones. Picking a judgment the words don't make is the G19 #23 trap.",
   },
 ];
