@@ -15,11 +15,11 @@ missed on practice ACTs (25MC1 and G19). Two kinds of pitch:
 - **Play Ball:** a 3-inning game against a random rival, 3 at-bats an inning.
   **The Full Nine** is 27 at-bats against the Red Sox.
 - **Right answer = a hit.** Beat the 42-second pitch clock (real ACT pace) for
-  extra bases: under 15 seconds is a home run. Three in a row and you're on fire,
+  extra bases: on the 42-second clock, under 15 seconds is a home run (the cutoffs scale with the clock you pick). Three in a row and you're on fire,
   so every hit goes one base farther.
 - **Wrong answer = strikeout.** The app flags the trap choice, explains why it's
   wrong, and sends the question to the **Film Room**. It keeps coming back until
-  you hit it.
+  you hit it there.
 - **Batting Practice:** drill a single rule with no score.
 - **Road Trip:** real questions from ACT's free official practice tests that
   test the same skills, by question number, with links to ACT's PDFs. Do them

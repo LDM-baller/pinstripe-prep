@@ -165,7 +165,7 @@ QUESTIONS.push(
   {
     id: "c-t4", kind: "cousin", code: "KLA 503", skill: "tone: slang in a formal essay",
     rule: "Tone and register", from: "ACT KLA 503",
-    passage: "The architects who designed the new ballpark studied dozens of older stadiums. They [[were pumped that they]] could keep the famous frieze that lines the roof.",
+    passage: "The architects who designed the new ballpark wanted it to echo the old one. They [[were pumped that they]] could re-create the famous frieze that lines the roof.",
     stem: "Which choice most effectively maintains the essay's tone?",
     choices: ["No Change", "were pleased that they", "went totally nuts that they", "rejoiced with boundless, unrestrained ecstasy that they"],
     answer: 1, trap: 0,
@@ -259,12 +259,12 @@ QUESTIONS.push(
   {
     id: "c-r1", kind: "cousin", code: "PUN 602", skill: "comma + which (not that)",
     rule: "Relative pronouns", from: "ACT PUN 602",
-    passage: "The current Yankee Stadium[[, that]] cost more than two billion dollars to build, opened in 2009.",
+    passage: "The current Yankee Stadium[[, that]] cost well over a billion dollars to build, opened in 2009.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", ", which", "which", ", who"],
     answer: 1, trap: 0,
-    why: "An extra-information clause set off by commas starts with which, never that.",
-    trapWhy: "That never follows a comma. Comma → which; no comma → that.",
+    why: "An extra-information clause set off by commas never starts with that. For a thing like the stadium, use which.",
+    trapWhy: "\"That\" never starts a clause set off by commas, so with commas around this one, the word for a thing is which.",
   },
   {
     id: "c-r2", kind: "cousin", code: "PUN 701", skill: "no commas around an essential clause",

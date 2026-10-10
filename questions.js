@@ -27,7 +27,7 @@ const RULES = {
   },
   "Pronoun and verb agreement": {
     short: "Pronouns", fam: "PRON",
-    tip: "Noun, verb AND pronoun all have to match. Check the pronoun last — that's where you stopped on 25MC1 #5. And its = belongs to it; it's = it is.",
+    tip: "The verb has to match its subject, and a pronoun has to match the noun it stands for, which isn't always the subject. Check the pronoun last — that's where you stopped on 25MC1 #5. And its = belongs to it; it's = it is (or it has).",
     missed: "25MC1 #5",
   },
   "Tone and register": {
@@ -42,12 +42,12 @@ const RULES = {
   },
   "Relative pronouns": {
     short: "Relative Clauses", fam: "REL",
-    tip: "One relative word, and the right kind: that/which for things, who for people, where only for places. Never \"that which,\" never \"that it.\"",
+    tip: "One relative word, and the right kind: that/which for things, who for people, where only for places. When the clause describes a noun, the relative word already stands for that noun, so don't add a second word for it: not \"the glove that which protected,\" not \"the fries that they are sold\" (just \"that are sold\"). A new subject can follow it: \"the fries that the vendor sells\" is fine.",
     missed: "25MC1 #31",
   },
   "Paired dashes around an interruption": {
     short: "Punctuation", fam: "PUNC",
-    tip: "An interruption needs a MATCHING pair: two dashes, two commas, or two parentheses. Open with one, close with the same. Then check the pair is around the right words.",
+    tip: "An interruption needs a MATCHING pair: two dashes, two commas, or two parentheses. Open with one, close with the same (with commas or a dash, if the interruption runs to the end of the sentence, the period closes it; a parenthesis always needs its closing partner). Then check the pair is around the right words.",
     missed: "25MC1 #33",
   },
   "Unnecessary punctuation": {
@@ -89,7 +89,7 @@ const QUESTIONS = [
   },
   {
     id: "sva3", kind: "rematch", code: "USG 701", skill: "plural subject, singular noun beside verb", rule: "Subject-verb agreement", from: "25MC1 #9 (flipped)",
-    passage: "The regulars in one right-field bleacher section [[chants]] the name of every Yankees starter in the top of the first inning.",
+    passage: "The regulars in one right-field bleacher section [[chants]] each outfielder's name in the top of the first inning.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "is chanting", "has chanted", "chant"],
     answer: 3, trap: 0,

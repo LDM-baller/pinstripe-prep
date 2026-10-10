@@ -63,7 +63,7 @@ Each family in the app covers these related standards:
 | Family | Standards drilled |
 |---|---|
 | Subject-verb | USG 302, 402, 601 (inverted order, indefinite pronouns, either/or, "there is"), 701 |
-| Pronouns | USG 303, 502 (across sentences), 503 (vague pronoun), 602 (its/it's, who/whom, reflexive); SST 502 (person shift) |
+| Pronouns | USG 502 (across sentences), 503 (vague pronoun), 602 (its/it's, who/whom, reflexive); SST 502 (person shift) |
 | Tone & word choice | KLA 401, 502, 602 (redundancy and wordiness); KLA 503 (tone); USG 603 (confused words) |
 | Transitions | ORG 401, 501, 601; KLA 504, 603 (conjunctions within a sentence) |
 | Relative clauses | SST 401; SST 301 (fragments); PUN 602, 701 (which vs. that, commas); USG 602 (whose, who/whom) |
