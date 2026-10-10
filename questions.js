@@ -22,17 +22,17 @@
 const RULES = {
   "Subject-verb agreement": {
     short: "Subject–Verb", fam: "SVA",
-    tip: "Find the TRUE subject, then say it with the verb alone. An -ing phrase is singular. \"One of the ___\" is singular. Ignore the noun sitting next to the verb.",
+    tip: "Find the TRUE subject, then say it with the verb alone. One -ing phrase as the subject (\"Stealing bases\") is singular; two joined by and are plural. \"One of the ___\" as the subject is singular. Don't trust the noun sitting next to the verb; it often isn't the subject. (With either/or and neither/nor, the verb matches the nearer of the two subjects, the one right after or/nor.)",
     missed: "25MC1 #9 and #21",
   },
   "Pronoun and verb agreement": {
     short: "Pronouns", fam: "PRON",
-    tip: "The verb has to match its subject, and a pronoun has to match the noun it stands for, which isn't always the subject. Check the pronoun last — that's where you stopped on 25MC1 #5. And its = belongs to it; it's = it is (or it has).",
+    tip: "The verb has to match its subject, and a pronoun has to match the noun it stands for, which isn't always the subject. Check the pronoun last — that's the step you skipped on 25MC1 #5. And its = belongs to it; it's = it is (or it has).",
     missed: "25MC1 #5",
   },
   "Tone and register": {
     short: "Tone & Word Choice", fam: "TONE",
-    tip: "Pick the phrase that sounds like the essay: formal, plain, neutral. Lively is not better. Watch for words whose connotation fights the point.",
+    tip: "Match the essay's voice. Most ACT passages are plain and neutral, so slang and over-the-top words are out, and lively is not better. But if the question asks for the most vivid or specific choice, give it that. Watch for words whose connotation fights the point.",
     missed: "25MC1 #6",
   },
   "Transitions": {
@@ -42,7 +42,7 @@ const RULES = {
   },
   "Relative pronouns": {
     short: "Relative Clauses", fam: "REL",
-    tip: "One relative word, and the right kind: that/which for things, who for people, where only for places. When the clause describes a noun, the relative word already stands for that noun, so don't add a second word for it: not \"the glove that which protected,\" not \"the fries that they are sold\" (just \"that are sold\"). A new subject can follow it: \"the fries that the vendor sells\" is fine.",
+    tip: "One relative word, and the right kind: that/which for things, who (or that) for people but never which, where only for places, when for times. When the clause describes a noun, the relative word already stands for that noun, so don't add a second word for it: not \"the glove that which protected,\" not \"the fries that they are cold\" (just \"that are cold\"). A new subject can follow it: \"the fries that the vendor sells\" is fine.",
     missed: "25MC1 #31",
   },
   "Paired dashes around an interruption": {
@@ -149,12 +149,12 @@ const QUESTIONS = [
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "stadium opened their", "stadiums opened its", "stadium opened it's"],
     answer: 0, trap: 2,
-    why: "Stadium, opened and its are all singular, and its (no apostrophe) is the possessive.",
-    trapWhy: "Stadiums is plural but its stayed singular. That's the #5 trap: you fixed the noun and verb and never checked the pronoun.",
+    why: "Stadium is singular, so the pronoun is the singular its, and the possessive its has no apostrophe.",
+    trapWhy: "Stadiums is plural but its stayed singular. That's the #5 trap: you changed the noun and never checked the pronoun.",
   },
   {
     id: "pa2", kind: "rematch", code: "USG 602", skill: "noun, verb and their agree", rule: "Pronoun and verb agreement", from: "25MC1 #5",
-    passage: "Worn smooth by decades of metal cleats, the dugout [[steps show its]] age.",
+    passage: "Worn smooth by decades of metal cleats, the old wooden [[steps show its]] age.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "step shows their", "steps show their", "steps show they're"],
     answer: 2, trap: 1,
@@ -205,8 +205,8 @@ const QUESTIONS = [
     stem: "Which choice most effectively maintains the essay's tone?",
     choices: ["No Change", "managed to squeak out", "hit", "majestically bestowed upon the adoring throngs"],
     answer: 2, trap: 1,
-    why: "Hit is plain and formal, like the rest of the passage.",
-    trapWhy: "Squeak out sounds fun, but it means barely getting it — which fights the image of a home run into the seats. Same trap as #6.",
+    why: "Hit is plain and neutral, like the rest of the passage.",
+    trapWhy: "Squeak out sounds fun and casual, but it means barely getting it — which fights the image of a home run into the seats. Same trap as #6.",
   },
   {
     id: "tr3", kind: "rematch", code: "KLA 503", skill: "tone: slang", rule: "Tone and register", from: "25MC1 #6",
@@ -215,12 +215,12 @@ const QUESTIONS = [
     choices: ["No Change", "pays eternal, reverent homage unto", "shows off", "honors"],
     answer: 3, trap: 2,
     why: "Honors is formal and neutral, and it says exactly what a memorial does.",
-    trapWhy: "Shows off turns a memorial into bragging. Right meaning, wrong connotation.",
+    trapWhy: "Shows off turns a memorial into bragging: the connotation is all wrong.",
   },
   {
     id: "tr4", kind: "rematch", code: "KLA 503", skill: "tone: precise meaning", rule: "Tone and register", from: "25MC1 #6",
-    passage: "Mariano Rivera relied almost entirely on a single pitch. His cut fastball, which broke late and sharply, [[baffled]] hitters for nearly two decades.",
-    stem: "Which choice most effectively maintains the essay's tone?",
+    passage: "Mariano Rivera relied almost entirely on a single pitch. His cut fastball, which broke late and sharply, [[baffled]] hitters for most of two decades.",
+    stem: "Which choice best maintains the essay's tone while conveying how hard the pitch was to hit?",
     choices: ["No Change", "totally messed with", "annoyed", "tormented the very souls of"],
     answer: 0, trap: 2,
     why: "Baffled is formal and precise: hitters couldn't figure the pitch out.",
@@ -228,7 +228,7 @@ const QUESTIONS = [
   },
   {
     id: "tr5", kind: "rematch", code: "KLA 503", skill: "tone: connotation", rule: "Tone and register", from: "25MC1 #6",
-    passage: "Lou Gehrig left baseball in 1939 after being diagnosed with a fatal disease. In his farewell speech at Yankee Stadium, he [[bragged that he was]] the luckiest man on the face of the earth.",
+    passage: "In 1939 Lou Gehrig was diagnosed with a fatal disease that ended his career. In his farewell speech at Yankee Stadium, he [[bragged that he was]] the luckiest man on the face of the earth.",
     stem: "Which choice most effectively maintains the essay's tone?",
     choices: ["No Change", "called himself", "was all like he's", "declared, with trembling majesty, that he was"],
     answer: 1, trap: 0,
@@ -243,7 +243,7 @@ const QUESTIONS = [
     stem: "Which transition word is most logical in context?",
     choices: ["No Change", "In contrast,", "For instance,", "As a result,"],
     answer: 1, trap: 0,
-    why: "The second sentence describes the opposite situation — lots of room for error vs. none — so it's a contrast.",
+    why: "The second sentence describes the opposite situation — lots of room for error vs. almost none — so it's a contrast.",
     trapWhy: "Granted concedes a point to the other side; it doesn't set up an opposite. That's the #30 trap.",
   },
   {
@@ -257,12 +257,12 @@ const QUESTIONS = [
   },
   {
     id: "tn3", kind: "rematch", code: "ORG 501", skill: "concession (the flip)", rule: "Transitions", from: "25MC1 #30 (flipped)",
-    passage: "Some longtime fans still miss the original Yankee Stadium. [[Granted,]] the old ballpark had a closeness that is hard to replace, but the new stadium offers wider concourses, better sight lines and far more comfortable seats.",
+    passage: "Some longtime fans still miss the original Yankee Stadium. [[Granted,]] the old ballpark had a closeness that is hard to replace, but the new stadium offers wider concourses and roomier seats.",
     stem: "Which transition word is most logical in context?",
     choices: ["No Change", "Conversely,", "As a result,", "For instance,"],
     answer: 0, trap: 1,
     why: "The writer admits a point for the other side (\"the old ballpark had a closeness\") and then answers it with \"but.\" That's a concession, so Granted is right.",
-    trapWhy: "Conversely means the opposite of the sentence before — but this sentence agrees with the fans. This is the #30 confusion from the other side.",
+    trapWhy: "Conversely would flip the sentence before, but this sentence opens by agreeing with the fans (\"the old ballpark had a closeness\") before it answers them with \"but.\" Agree first, then answer: that's a concession. This is the #30 confusion from the other side.",
   },
   {
     id: "tn4", kind: "rematch", code: "ORG 501", skill: "example vs. concession", rule: "Transitions", from: "25MC1 #30",
@@ -304,7 +304,7 @@ const QUESTIONS = [
   },
   {
     id: "rp3", kind: "rematch", code: "SST 401", skill: "where for places", rule: "Relative pronouns", from: "25MC1 #31",
-    passage: "The team has played its home games in the Bronx, [[which]] the original Yankee Stadium opened in 1923.",
+    passage: "The Yankees play their home games in the Bronx, [[which]] the original Yankee Stadium opened in 1923.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "that which", "where", "that"],
     answer: 2, trap: 1,
@@ -313,11 +313,11 @@ const QUESTIONS = [
   },
   {
     id: "rp4", kind: "rematch", code: "SST 401", skill: "repeated pronoun", rule: "Relative pronouns", from: "25MC1 #31",
-    passage: "Fans still line up for the garlic fries [[that they]] are sold near the left-field gate.",
+    passage: "Fans line up for the garlic fries [[that they]] come out of the fryer at a stand near the left-field gate.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
-    choices: ["No Change", "where they", "that", "Delete the underlined portion."],
+    choices: ["No Change", "which they", "that", "Delete the underlined portion."],
     answer: 2, trap: 0,
-    why: "That starts the clause and already stands for the fries, so it needs nothing after it.",
+    why: "That starts the clause and already stands for the fries, so it needs no second word for them: \"that come out of the fryer.\"",
     trapWhy: "\"That they\" repeats the noun with a pronoun. The clause gets one word for the fries, not two.",
   },
   {
@@ -326,8 +326,8 @@ const QUESTIONS = [
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "which", "where they", "which they"],
     answer: 1, trap: 0,
-    why: "Pinstripes are things, and after a comma the relative word is which.",
-    trapWhy: "\"That which\" is the double relative from #31. It sounds fancy; it's wrong.",
+    why: "Pinstripes are things, and in an extra-information clause set off by commas, a thing takes which.",
+    trapWhy: "\"That which\" is the double relative from #31. It sounds fancy; here it's wrong.",
   },
 
   // ---------- Paired dashes / punctuation around an interruption (#33) ----------
@@ -351,12 +351,12 @@ const QUESTIONS = [
   },
   {
     id: "pd3", kind: "rematch", code: "PUN 602", skill: "commas around a which-clause", rule: "Paired dashes around an interruption", from: "25MC1 #33",
-    passage: "Monument Park[[, which sits just beyond the center-field fence]] draws crowds of visitors before every home game.",
+    passage: "Monument Park[[, which sits just beyond the center-field fence]] draws crowds of visitors before home games.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "—which sits just beyond the center-field fence,", ", which sits just beyond the center-field fence,", "which sits just beyond the center-field fence,"],
     answer: 2, trap: 0,
-    why: "The clause interrupts the subject and verb, so it needs a comma on both sides.",
-    trapWhy: "The original opens with a comma and never closes it. Count the marks: you need two, and they need to match.",
+    why: "Monument Park is already named, so the which-clause is extra information, and extra information in the middle of a sentence needs a matching mark on both sides. Here it opens with a comma, so it closes with one.",
+    trapWhy: "The original opens with a comma and never closes it. Count the marks: an add-on in the middle of a sentence needs two, and they need to match.",
   },
   {
     id: "pd4", kind: "rematch", code: "PUN 503", skill: "pair around the right words", rule: "Paired dashes around an interruption", from: "25MC1 #33",
@@ -374,7 +374,7 @@ const QUESTIONS = [
     choices: ["No Change", "(a slider that broke sharply)", "(a slider that broke sharply", ", a slider that broke sharply)"],
     answer: 1, trap: 2,
     why: "Parentheses work as a pair too: open and close with the same kind of mark.",
-    trapWhy: "Opens with a parenthesis and never closes it. One mark is never enough for an interruption.",
+    trapWhy: "Opens with a parenthesis and never closes it. A parenthesis always needs its closing partner.",
   },
 
   // ---------- Unnecessary punctuation (missed twice: G19 #1 and #20) ----------

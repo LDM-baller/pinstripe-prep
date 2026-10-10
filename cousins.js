@@ -31,7 +31,7 @@ QUESTIONS.push(
   {
     id: "c-sva3", kind: "cousin", code: "USG 601", skill: "either/or: verb matches the closer subject",
     rule: "Subject-verb agreement", from: "ACT USG 601",
-    passage: "Either the manager or his pitching coaches [[decides]] when a tired starter leaves the game.",
+    passage: "Either the manager or his coaches [[decides]] when a tired starter leaves the game.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "decide", "has decided", "is deciding"],
     answer: 1, trap: 0,
@@ -46,16 +46,16 @@ QUESTIONS.push(
     choices: ["No Change", "visits", "have visited", "are visiting"],
     answer: 1, trap: 0,
     why: "The subject is shortstop. \"Along with two of his teammates\" is an interruption, not part of the subject, so visits.",
-    trapWhy: "Visit treats it like \"the shortstop and two teammates.\" Only and makes a plural; along with, as well as and together with don't.",
+    trapWhy: "Visit treats it like \"the shortstop and two teammates.\" Add-ons like along with, as well as and together with never change the subject, so the verb still matches shortstop.",
   },
   {
     id: "c-sva5", kind: "cousin", code: "USG 601", skill: "\"there is / there are\"",
     rule: "Subject-verb agreement", from: "ACT USG 601",
-    passage: "During a regular-season game, there [[is]] four umpires on the field, one at each base and one behind the plate.",
+    passage: "During a major-league regular-season game, there [[is]] four umpires on the field, one each at first, second, and third base and one behind the plate.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "are", "was", "has been"],
     answer: 1, trap: 0,
-    why: "\"There\" is never the subject. The subject is four umpires, so are.",
+    why: "In \"there is / there are,\" the real subject comes after the verb. Here it's four umpires, so are.",
     trapWhy: "\"There is\" sounds natural because people say it all the time, but the real subject comes after the verb and it's plural.",
   },
   {
@@ -88,7 +88,7 @@ QUESTIONS.push(
     choices: ["No Change", "the catcher", "they", "him"],
     answer: 1, trap: 0,
     why: "Two people could be \"he.\" Naming the catcher removes the confusion.",
-    trapWhy: "He could mean the pitcher or the catcher. On the ACT, a pronoun that could point to two people is wrong even if you can guess.",
+    trapWhy: "He could mean the pitcher or the catcher. On the ACT, when a choice names the person, a pronoun that could point to two people is wrong even if you can guess.",
   },
   {
     id: "c-pr3", kind: "cousin", code: "USG 602", skill: "who vs. whom",
@@ -113,7 +113,7 @@ QUESTIONS.push(
   {
     id: "c-pr5", kind: "cousin", code: "SST 502", skill: "pronoun person shift",
     rule: "Pronoun and verb agreement", from: "ACT SST 502",
-    passage: "When fans catch a foul ball, [[you]] usually hold it up for the television cameras.",
+    passage: "When fans catch a foul ball, [[you]] often hold it up for the television cameras.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "they", "we", "one"],
     answer: 1, trap: 0,
@@ -128,7 +128,7 @@ QUESTIONS.push(
     choices: ["No Change", "me", "I", "ourselves"],
     answer: 1, trap: 0,
     why: "Drop \"Marcus and\": \"asked me to carry.\" So me.",
-    trapWhy: "Myself only works when \"I\" already appears in the sentence (\"I carried it myself\"). It sounds formal, but it's wrong here.",
+    trapWhy: "Myself only works when I or me already appears earlier in the sentence and myself points back to it (\"I carried it myself\"). Nothing here does that, so it's me.",
   },
 
   // ---------- Tone and word choice family ----------
@@ -149,7 +149,7 @@ QUESTIONS.push(
     stem: "Which choice is most effective?",
     choices: ["No Change", "because", "on account of the fact that", "owing to the reason that"],
     answer: 1, trap: 0,
-    why: "Because says the same thing in one word. The ACT rewards the shortest version that keeps the meaning.",
+    why: "Because says the same thing in one word. When the choices say the same thing, the ACT wants the shortest one that's still correct.",
     trapWhy: "\"Due to the fact that\" sounds official, but it's five words doing one word's job.",
   },
   {
@@ -217,12 +217,12 @@ QUESTIONS.push(
   {
     id: "c-tr3", kind: "cousin", code: "ORG 401", skill: "time order",
     rule: "Transitions", from: "ACT ORG 401",
-    passage: "The groundskeepers arrive at dawn to water the infield. [[In contrast,]] they drag the dirt smooth and paint the foul lines.",
+    passage: "The groundskeepers arrive at dawn to drag the infield smooth. [[In contrast,]] they water the dirt and paint the foul lines.",
     stem: "Which transition word is most logical in context?",
     choices: ["No Change", "Afterward,", "Nevertheless,", "For instance,"],
     answer: 1, trap: 0,
     why: "These are the next steps in the same routine, so a time word fits.",
-    trapWhy: "In contrast needs an opposite. Watering and painting aren't opposites — they're steps in order.",
+    trapWhy: "In contrast needs an opposite. Dragging and watering aren't opposites — they're steps in order.",
   },
   {
     id: "c-tr4", kind: "cousin", code: "KLA 603", skill: "conjunction inside a sentence: but vs. so",
@@ -263,8 +263,8 @@ QUESTIONS.push(
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", ", which", "which", ", who"],
     answer: 1, trap: 0,
-    why: "An extra-information clause set off by commas never starts with that. For a thing like the stadium, use which.",
-    trapWhy: "\"That\" never starts a clause set off by commas, so with commas around this one, the word for a thing is which.",
+    why: "An extra-information clause like this one never starts with that. For a thing like the stadium, use which.",
+    trapWhy: "\"That\" can't start an extra-information clause like this one, so with commas around it, the word for a stadium is which.",
   },
   {
     id: "c-r2", kind: "cousin", code: "PUN 701", skill: "no commas around an essential clause",
@@ -299,12 +299,12 @@ QUESTIONS.push(
   {
     id: "c-r5", kind: "cousin", code: "SST 401", skill: "\"where\" for something that isn't a place",
     rule: "Relative pronouns", from: "ACT SST 401",
-    passage: "1996 was the season [[where]] the Yankees won their first championship in eighteen years.",
+    passage: "The Yankees' 1996 season was the one [[where]] they won their first championship in eighteen years.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "in which", "which", "that it"],
     answer: 1, trap: 0,
     why: "A season is a time, not a place. \"In which\" works.",
-    trapWhy: "Where is only for physical places. It's the same rule you saw with \"where it\" on 25MC1 #31.",
+    trapWhy: "Where is for places, not times, and a season is a time. It's the same rule you saw with \"where it\" on 25MC1 #31.",
   },
   {
     id: "c-r6", kind: "cousin", code: "SST 401", skill: "which vs. who for people",
@@ -312,16 +312,16 @@ QUESTIONS.push(
     passage: "The ushers [[which]] work the upper deck know most of the season-ticket holders by name.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "who", "whom", "where"],
-    answer: 1, trap: 2,
+    answer: 1, trap: 0,
     why: "Ushers are people and they're doing the working, so who.",
-    trapWhy: "Whom is for people receiving the action. Here the ushers are the ones working.",
+    trapWhy: "Which is for things, and ushers are people. (Whom is out too: it's for people receiving the action, and here the ushers are doing the working.)",
   },
 
   // ---------- Punctuation and clause boundaries family ----------
   {
     id: "c-p1", kind: "cousin", code: "PUN 701", skill: "no commas around an essential name",
     rule: "Paired dashes around an interruption", from: "ACT PUN 701",
-    passage: "Hall of Fame pitcher[[, Whitey Ford,]] won more games than any other pitcher in franchise history.",
+    passage: "Hall of Fame pitcher[[, Whitey Ford,]] won more games than any other pitcher in Yankees history.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "Whitey Ford", ", Whitey Ford", "Whitey Ford,"],
     answer: 1, trap: 0,
@@ -335,8 +335,8 @@ QUESTIONS.push(
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "deck cheered", "deck; cheered", "deck—cheered"],
     answer: 1, trap: 0,
-    why: "\"The fans packed into the upper deck\" is the subject and cheered is the verb. Nothing goes between them.",
-    trapWhy: "You pause there when you read it aloud, but a pause isn't a reason for a comma. One mark between a subject and its verb is always wrong.",
+    why: "\"The fans packed into the upper deck\" is the subject and cheered is the verb. No single mark goes between them.",
+    trapWhy: "You pause there when you read it aloud, but a pause isn't a reason for a comma. A lone mark between a subject and its verb is wrong; the only exception is the closing mark of a matched pair (two commas, two dashes, two parentheses) around an add-on.",
   },
   {
     id: "c-p3", kind: "cousin", code: "SST 301", skill: "comma splice",
@@ -361,12 +361,12 @@ QUESTIONS.push(
   {
     id: "c-p5", kind: "cousin", code: "PUN 502", skill: "no colon after a verb",
     rule: "Paired dashes around an interruption", from: "ACT PUN 502",
-    passage: "The concession stands behind home plate [[sell:]] hot dogs, soft pretzels, and garlic fries.",
+    passage: "The food stands behind home plate [[sell:]] hot dogs, soft pretzels, and garlic fries.",
     stem: "Which choice makes the sentence most grammatically acceptable?",
     choices: ["No Change", "sell", "sell;", "sell—"],
     answer: 1, trap: 0,
-    why: "The list is the object of sell, and nothing goes between a verb and its object.",
-    trapWhy: "Colons introduce lists only after a complete sentence. \"The concession stands sell\" isn't complete.",
+    why: "The list is the object of sell, and no single mark goes between a verb and the list it introduces.",
+    trapWhy: "Colons introduce lists only after a complete sentence. Here sell needs its list, so a colon can't cut the list off from it.",
   },
   {
     id: "c-p6", kind: "cousin", code: "PUN 501", skill: "no comma in a compound verb",
@@ -376,7 +376,7 @@ QUESTIONS.push(
     choices: ["No Change", "cleanly and", "cleanly; and", "cleanly, and,"],
     answer: 1, trap: 0,
     why: "One subject (the shortstop) doing two things (fielded and threw) takes no comma before and.",
-    trapWhy: "A comma before and is right only when a full sentence follows. \"Threw to first base\" has no subject of its own.",
+    trapWhy: "When one subject does two things joined by and, no comma. \"Threw to first base\" has no subject of its own, so it isn't a second sentence.",
   },
 
   // ---------- What a part does family (purpose, relevance, keep or delete) ----------

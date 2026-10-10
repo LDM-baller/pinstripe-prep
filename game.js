@@ -248,11 +248,12 @@ function nextAtBat() {
   const rest = [1, 2, 3].filter(k => !del.includes(k)).sort(() => Math.random() - 0.5);
   G.order = q.choices[0] === "No Change" ? [0, ...rest, ...del] : [0, 1, 2, 3];
   G.letters = [0, 1, 2, 3].map(k => letters[G.order.indexOf(k)]);
+  // Rule, ACT code and which miss it rematches stay hidden until he answers:
+  // any of them names the rule, and that gives the answer away.
   const passage = q.passage.replace(/\[\[(.+?)\]\]/, (_, u) => `<u>${u}</u><span class="num">${G.abNum}</span>`);
   $("#stage").innerHTML = `
     <div class="card">
-      <div class="meta"><span>${RULES[q.rule].short} · ${q.code}</span>${q.kind === "cousin"
-        ? `<span class="newp">NEW PITCH</span>` : `<span>Rematch of <b>${q.from}</b></span>`}</div>
+      <div class="meta">${q.kind === "cousin" ? `<span class="newp">NEW PITCH</span>` : `<span>Rematch</span>`}</div>
       <p class="passage">${passage}</p>
       <p class="stem">${G.abNum}. ${q.stem}</p>
       <div class="choices">${G.order.map((k, pos) =>
@@ -359,7 +360,7 @@ function answer(i) {
   film.className = "film " + (right ? "good" : "bad");
   film.innerHTML = `
     <h4>${headline}</h4>
-    <p style="font-size:12.5px;opacity:.7;margin-top:-2px">ACT skill ${q.code} · ${q.skill}</p>
+    <p style="font-size:12.5px;opacity:.7;margin-top:-2px">${RULES[q.rule].short} · ACT skill ${q.code} · ${q.skill}${q.kind === "rematch" ? ` · rematch of ${q.from}` : ""}</p>
     <p style="font-size:13px;margin:4px 0 8px">⏱ ${timeLine(secs)}</p>
     <p><b>${L[q.answer]} is right.</b> ${q.why}</p>
     ${right ? `<p style="opacity:.8"><b>The trap was ${L[q.trap]}.</b> ${q.trapWhy}</p>`

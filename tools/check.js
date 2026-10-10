@@ -94,10 +94,10 @@ check("README links the live site", readme.includes("https://ldm-baller.github.i
 // 12. Public-repo privacy: no email, no family surname.
 const all = fs.readdirSync(R, { recursive: true }).filter(f => !f.startsWith(".git") && /\.(js|md|html|json)$/.test(f)).map(f => rd(f)).join("\n");
 check("no email addresses in repo files", !/[\w.+-]+@[\w-]+\.\w+/.test(all.replace(/noreply@anthropic\.com/g, "")));
-// Family surnames, stored as hashes so the names never appear in this public repo.
-const crypto = require("crypto"), SURNAMES = ["befb90274c7db469","c3e366d472090aa5"];
+// Family and tutor surnames, stored as hashes so the names never appear in this public repo.
+const crypto = require("crypto"), SURNAMES = ["befb90274c7db469","c3e366d472090aa5", "b2c4f1e4b47ad31d"];
 const hits = [...new Set(all.toLowerCase().match(/[a-z]+/g))].filter(w => SURNAMES.includes(crypto.createHash("sha256").update(w).digest("hex").slice(0, 16)));
-check("no family surname in repo files", !hits.length, hits.join(", "));
+check("no family or tutor surname in repo files", !hits.length, hits.join(", "));
 
 // 13. Changed scripts need a new ?v= or phones keep the cached copies.
 //     Compared with what is deployed (origin/main); skipped when git can't tell.
