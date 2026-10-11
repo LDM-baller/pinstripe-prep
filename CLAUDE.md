@@ -9,7 +9,8 @@ app, **Pinstripe Prep**, stocked and deployed.
 ## Where the source material lives
 
 Everything about his test prep lives in Google Drive, not in this folder. Sarita
-keeps that folder (its README says so); this project only reads it, and
+(the project in `Programs/Sarita/`, which this project never writes to)
+keeps that folder, as its README says; this project only reads it, and
 anything wrong there goes to Lindsay rather than being fixed from here:
 
     My Drive/Education/ACT/
@@ -19,7 +20,8 @@ anything wrong there goes to Lindsay rather than being fixed from here:
           tab 1  every miss: the sentence, all four choices, his answer,
                  the right one, the rule, THE TRAP HE FELL FOR, and a
                  recipe for writing a new question
-          tab 2  misses per rule
+          tab 2  misses per rule (its question counts are for Practice/
+                 sets; the app's are in step 3 below)
           tab 3  instructions for writing practice (follow them, except
                  that its Markdown format is for Practice/ sets, and its
                  "first choice is always No Change" does not hold for
@@ -43,7 +45,7 @@ A static web app, no build step. Open `index.html` to run it.
 | `questions.js` | `RULES` (one skill family per rule he missed) and the rematch `QUESTIONS` |
 | `cousins.js` | "new pitch" questions: same family, different ACT standard |
 | `about.js` | About & Report Card page, and the "send to Mark" snapshot link |
-| `officials.js` | official ACT questions by family, for the Road Trip screen (numbers and pages only) |
+| `officials.js` | official ACT questions by family, for the Road Trip screen: numbers, pages, answer letters and a short skill note, never question text |
 | `research/` | `SKILLS.md`: ACT's skill codes, his misses coded, and the official-question map; plus the per-question classification JSON |
 | `tools/` | `check.js`: mechanical checks of code and documents against each other; `build-officials.js`: rebuilds `officials.js` from the JSON. Not loaded by the app |
 
@@ -60,8 +62,9 @@ Stats live in `localStorage` on Levi's device only (`pinstripePrep.v1`). Every
 attempt is appended to `S.hist` as `{id, c: choice index, r: right, s: seconds,
 d: timestamp, m: game mode, t: clock limit}`. `t` is 42 (Timed, ACT pace), 31
 (Reduced time, Mark's 25-in-13 drill) or 0 (Untimed); attempts from before
-timing modes existed have no `t` and ran on the 42s clock. Road Trip results
-are in `S.road`.
+timing modes existed have no `t` and ran on the 42s clock. `S.hist` keeps
+the latest 1500 attempts (`game.js`, `answer()`); older ones drop out of the
+report card and the link to Mark. Road Trip results are in `S.road`.
 
 Mark can't see Levi's device, so the report card's "Send this report to Mark"
 button packs the stats into a compressed `#report=` link. Opening it renders
@@ -171,7 +174,10 @@ is already logged in) and push with
 The repo is public, so keep it to first names. No surname (his or his
 tutor's), age, grade, school, email, or scores in any file here.
 `tools/check.js` checks for the family and tutor surnames by hash, so the
-names never appear in it.
+names never appear in it. It reads only the current files: commits from
+before 2026-10-10 still hold his age, grade and the tutor's surname in
+CLAUDE.md, and every commit's author line carries a surname. Removing that
+means rewriting history and force-pushing, which is Lindsay's decision.
 
 ## Open items
 
@@ -180,12 +186,19 @@ Every question and tip has now had the step-5 validation (G19 batch on
 2026-10-03, the 69 older ones on 2026-10-10, which found one question with
 two defensible answers and a dozen false or over-broad explanations).
 
+In rough order of value to Levi:
+
+- Road Trip has no "What a Part Does" family, and the ★ marks cover only
+  the 25MC1 misses (the legend says so). Candidates for G19 ★: PUN 701 on
+  2176 #1, PT2 #11, #46. Set `family`/`core` in the JSON (have a fresh
+  agent judge "same narrow rule" too), run `node tools/build-officials.js`,
+  update SKILLS.md and the legend in `game.js` `roadTrip`.
 - Cousins have No Change right 2 times in 38, so "No Change is wrong on a
   new pitch" is learnable. Rebalance when cousins are next touched.
-- Road Trip has no "What a Part Does" family, and the ★ marks predate
-  G19 (see the end of `research/SKILLS.md`).
 - In the unnecessary-punctuation rematches, the right answer is usually
   the version with the fewest commas; only up3 rewards adding them.
+- The "send to Mark" link has been tested in a desktop browser only, never
+  on Levi's phone.
 
 ## Tone
 

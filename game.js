@@ -502,7 +502,7 @@ function roadTrip(showPt2) {
   $("#road").innerHTML = `
     <button class="back" id="rBack">◂ Clubhouse</button>
     <h2 class="bebas">Road Trip</h2>
-    <p style="color:var(--dim);line-height:1.5">Real ACT questions from ACT's free official tests, sorted by the skills you've missed. Open the PDF, do the question on paper, then tap it here to check. ★ = the same rule as one of your real misses.</p>
+    <p style="color:var(--dim);line-height:1.5">Real ACT questions from ACT's free official tests, sorted by the skills you've missed. Open the PDF, do the question on paper, then tap it here to check. ★ = the same rule as one of your 25MC1 misses (G19 rules aren't marked yet).</p>
     <p class="center" style="text-align:left">Road record: ${hits}-for-${done.length}</p>
     ${tests.map(t => `<a class="btn" style="text-decoration:none;margin:8px 0" href="${t.url}" target="_blank" rel="noopener">${t.name} PDF ↗<small>${t.sub}</small></a>`).join("")}
     ${showPt2 ? "" : `<button class="btn" id="pt2" style="width:100%;margin-top:8px">+ Also show Practice Test 2 <small>ask Mark first: it may be saved for a mock</small></button>`}

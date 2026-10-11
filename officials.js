@@ -1,8 +1,10 @@
-// Official ACT questions that test Levi's skill families. Question numbers
-// and page numbers only; the questions themselves stay in ACT's free PDFs.
-// Classified question by question against ACT's College & Career Readiness
-// Standards. core: true = the same narrow rule as one of his real misses.
-// Generated 2026-09-26; rebuild from the classification JSON, don't hand-edit.
+// Official ACT questions that test Levi's skill families: question and page
+// numbers, ACT's answer letter and a short skill note, never question text
+// (that stays in ACT's free PDFs). Classified question by question against
+// ACT's College & Career Readiness Standards. core: true = the same narrow
+// rule as one of his 25MC1 misses (G19 not yet marked).
+// The OFFICIAL list is built by tools/build-officials.js from research/*.json;
+// don't hand-edit it.
 const OFFICIAL_TESTS = [
   {
     "key": "2176",

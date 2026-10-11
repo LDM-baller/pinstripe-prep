@@ -96,7 +96,7 @@ Gaps: neither test repeats the Granted-vs-Conversely confusion or "that
 which" exactly, and Practice Test 2 has no relative-clause questions at
 all. The app's own questions cover those.
 
-PT2 #16–25 are unscored field-test items on the official key, but they
+PT2 #16–25 are marked "Not Scored" on the official key (p. 63), but they
 are still real ACT questions and fine for practice.
 
 ## Why the official questions aren't inside the app

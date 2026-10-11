@@ -11,7 +11,8 @@
 //   skill     a few words naming the exact rule
 //   from      the real test question it is modelled on
 //   passage   the sentence(s); the underlined part goes in [[double brackets]]
-//   stem      the question asked, copied from the bank's "Question asked"
+//   stem      the question asked, in ACT's own wording for that kind of question
+//             (the bank's "Question asked" column, or ACT's standard stem)
 //   choices   exactly four; the first is always "No Change", except on questions
 //             that ask what a part does (the real test has none there either)
 //   answer    index 0-3 of the right choice
