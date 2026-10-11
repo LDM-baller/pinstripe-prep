@@ -37,6 +37,11 @@ function ruleStats(rule, kind) {
 }
 function avg(h, ab) { return ab ? (h / ab).toFixed(3).replace(/^0/, "") : ".000"; }
 function filmIds() { return QUESTIONS.filter(q => S.q[q.id]?.film).map(q => q.id); }
+// Questions in play. Retired ones stay in QUESTIONS so old stats and report links still read.
+const LIVE = QUESTIONS.filter(q => !q.retired);
+const DAY = 864e5;
+// Misses from before lastMiss existed rest until the Film Room clears them.
+const restingAfterMiss = st => !!st && (st.lastMiss ? Date.now() - st.lastMiss < 3 * DAY : st.film && st.last === false);
 
 // ---------- sound ----------
 let ac;
@@ -149,23 +154,45 @@ function home() {
 
 // ---------- picking questions ----------
 // Weakest rules come up most: weight by the misses on the real test, then by
-// this app's own record, and bring Film Room questions back more often.
+// this app's own record. A question he just missed rests for three days (he
+// knows its answer now); instead, other questions on that rule come up more.
+// Baseball sentences come up a little less than the other topics.
 const TEST_MISSES = { "Subject-verb agreement": 2, "Unnecessary punctuation": 2 };
+function filmRules() { return new Set(filmIds().map(id => QUESTIONS.find(q => q.id === id).rule)); }
 function pick(pool, used) {
-  let cand = pool.filter(q => !used.has(q.id));
-  if (!cand.length) { used.clear(); cand = pool.slice(); }
+  // A question resting after a miss is skipped outright, even in a small pool.
+  const awake = pool.filter(q => !restingAfterMiss(S.q[q.id]));
+  const base = awake.length ? awake : pool;
+  let cand = base.filter(q => !used.has(q.id));
+  if (!cand.length) { used.clear(); cand = base.slice(); }
   const weights = cand.map(q => {
     const st = S.q[q.id], rs = ruleStats(q.rule);
     let w = 1 + (TEST_MISSES[q.rule] || 1) * 0.5;
     w *= 1 + (rs.ab ? (1 - rs.h / rs.ab) : 0.5);
     if (!st || !st.seen) w *= 2;
-    if (st?.film) w *= 3;
+    if (filmRules().has(q.rule) && !st?.film) w *= 2;
+    if (!q.topic) w *= 0.6;
     if (st && st.last === true && st.right >= 2) w *= 0.4;
     return w;
   });
   let r = Math.random() * weights.reduce((a, b) => a + b, 0);
   for (let i = 0; i < cand.length; i++) { r -= weights[i]; if (r <= 0) return cand[i]; }
   return cand[cand.length - 1];
+}
+
+// A different question on the same skill as a missed one: same ACT code if
+// possible, then same rule, then same family. Fresh ones first, then the ones
+// he has seen least and longest ago. The missed one itself only as a last resort.
+function standIn(missed, used) {
+  const ok = x => x.id !== missed.id && !used.has(x.id) && !restingAfterMiss(S.q[x.id]);
+  const tiers = [x => x.code === missed.code && x.rule === missed.rule, x => x.rule === missed.rule, x => RULES[x.rule].fam === RULES[missed.rule].fam];
+  for (const tier of tiers) {
+    const cand = LIVE.filter(x => tier(x) && ok(x));
+    if (!cand.length) continue;
+    const score = x => { const st = S.q[x.id]; return (st?.seen || 0) * 10 + (st?.film ? 5 : 0) + (st?.when > Date.now() - DAY ? 3 : 0) + Math.random(); };
+    return cand.sort((a, b) => score(a) - score(b))[0];
+  }
+  return missed;
 }
 
 // ---------- game state ----------
@@ -177,8 +204,8 @@ function newGame(mode, opts = {}) {
   const innings = mode === "full" ? 9 : mode === "quick" ? 3 : 0;
   G = {
     mode, innings, rival, inning: 1, ab: 0, abNum: 0, outs: 0, bases: [0, 0, 0],
-    streak: 0, used: new Set(), opp: [], nyy: [], log: [],
-    pool: opts.pool || QUESTIONS, label: opts.label || "", ledAtStart: false,
+    streak: 0, used: new Set(), filmDone: new Set(), opp: [], nyy: [], log: [],
+    pool: opts.pool || LIVE, label: opts.label || "", ledAtStart: false,
   };
   show("game");
   const scored = mode === "quick" || mode === "full";
@@ -232,13 +259,22 @@ function inningTag() {
 }
 
 function nextAtBat() {
-  let pool = G.pool;
+  let q;
+  G.standFor = null;
   if (G.mode === "film") {
-    const ids = filmIds();
-    if (!ids.length) { banner("FILM ROOM CLEAR", "Every missed pitch has been fixed", 2200); setTimeout(home, 2300); return; }
-    pool = QUESTIONS.filter(q => ids.includes(q.id));
-  }
-  const q = pick(pool, G.used); G.used.add(q.id); G.q = q; G.abNum++; G.answered = false;
+    // The Film Room never replays the pitch he missed: he knows that answer now.
+    // It throws a different question on the same skill, and a hit clears the miss.
+    const ids = filmIds().filter(id => !G.filmDone.has(id));
+    if (!ids.length) {
+      const left = filmIds().length;
+      banner(left ? "FILM SESSION OVER" : "FILM ROOM CLEAR", left ? `${left} still to fix next time` : "Every missed skill has been fixed", 2200);
+      setTimeout(home, 2300); return;
+    }
+    const missed = pick(QUESTIONS.filter(x => ids.includes(x.id)), new Set());
+    G.filmDone.add(missed.id); G.standFor = missed.id;
+    q = standIn(missed, G.used);
+  } else q = pick(G.pool, G.used);
+  G.used.add(q.id); G.q = q; G.abNum++; G.answered = false;
   $("#inningTag").innerHTML = inningTag();
   drawBoard();
   const letters = G.abNum % 2 ? ["A", "B", "C", "D"] : ["F", "G", "H", "J"];
@@ -318,8 +354,12 @@ function answer(i) {
   btn(q.answer).classList.add("right");
   if (!right) { btn(i).classList.add("wrong"); btn(q.trap).classList.add("trapmark"); }
 
-  const st = qs(q.id); st.seen++; st.last = right;
-  if (right) { st.right++; if (G.mode === "film") st.film = false; } else st.film = true;
+  const st = qs(q.id); st.seen++; st.last = right; st.when = Date.now();
+  if (right) {
+    st.right++;
+    // A hit in the Film Room clears the miss it stood in for (and its own, if it had one).
+    if (G.mode === "film") { st.film = false; if (G.standFor) qs(G.standFor).film = false; }
+  } else { st.film = true; st.lastMiss = Date.now(); }
   G.log.push({ id: q.id, rule: q.rule, right });
   // Full history for the About page: which choice, how fast, when, in what mode.
   const limit = CLOCKS[clockMode()].limit;
@@ -365,7 +405,7 @@ function answer(i) {
     <p><b>${L[q.answer]} is right.</b> ${q.why}</p>
     ${right ? `<p style="opacity:.8"><b>The trap was ${L[q.trap]}.</b> ${q.trapWhy}</p>`
             : `<p><b>${i === q.trap ? "You swung at " + L[q.trap] + ", the trap." : "The trap was " + L[q.trap] + "."}</b> ${q.trapWhy}</p>`}
-    ${right ? "" : `${q.kind === "rematch" ? `<p class="tip">📋 ${RULES[q.rule].tip}</p>` : ""}<p style="font-size:13px;opacity:.75">Sent to the Film Room. It'll come back until you hit it.</p>`}
+    ${right ? "" : `${q.kind === "rematch" ? `<p class="tip">📋 ${RULES[q.rule].tip}</p>` : ""}<p style="font-size:13px;opacity:.75">Sent to the Film Room. You won't see this one again for a while: the Film Room throws you a different question on the same skill until you hit one.</p>`}
     <button class="btn primary next">${nextLabel()}</button>`;
   $("#stage").appendChild(film);
   film.querySelector(".next").onclick = advanceGame;
@@ -486,7 +526,7 @@ function bpPicker() {
   show("bp");
   $("#bBack").onclick = home;
   $("#bp").querySelectorAll("[data-rule]").forEach(b => b.onclick = () =>
-    newGame("bp", { pool: QUESTIONS.filter(q => q.rule === b.dataset.rule), label: b.dataset.rule }));
+    newGame("bp", { pool: LIVE.filter(q => q.rule === b.dataset.rule), label: b.dataset.rule }));
 }
 
 // ---------- road trip: official ACT questions, done on paper ----------

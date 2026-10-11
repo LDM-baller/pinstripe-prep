@@ -52,9 +52,23 @@ A static web app, no build step. Open `index.html` to run it.
 How it plays: each question is an at-bat. A right answer is a hit, and speed
 on the 42-second pitch clock (real ACT English pace) earns extra bases. A
 wrong answer is a strikeout; the app marks the trap choice, explains it, and
-sends the question to the Film Room, where it keeps coming back until he gets
-it right there (a right answer in a regular game doesn't clear it). Questions from his weakest rules come up most. Stats are saved in
-the browser on his device only.
+sends the miss to the Film Room. Levi asked (2026-10-11) that a missed
+question not come straight back, since he then knows its answer. So a missed
+question rests for three days and is skipped everywhere (`restingAfterMiss`
+in `game.js`); the Film Room throws a *different* question on the same skill
+(`standIn`: same ACT code, then same rule, then same family; fresh ones
+first), and a hit there clears the miss. Questions on a rule with an open
+miss, and from his weakest rules, come up most. Stats are saved in the
+browser on his device only.
+
+Topics: Levi also found all-baseball sentences too narrow, and a fan could
+sometimes answer from the baseball instead of the grammar. Every question
+from 2026-10-11 on carries a `topic` and is on another subject; questions
+with no `topic` are the original baseball ones, which come up a little less
+often (`pick`). Four baseball questions that gave the answer away carry
+`retired: "<reason>"`: they stay in `QUESTIONS` so old stats and report
+links still read, but they are never served and don't count toward
+"x of y seen". Retire a question that way; never delete one.
 
 ## Stats, timing and the report card
 
@@ -119,9 +133,12 @@ want it as a mock (the About page still links its PDF).
 3. Write 3 to 5 rematches per miss into `QUESTIONS`, and a few cousins into
    `cousins.js` for any family that is new, following the
    bank's recipe for that row and the rules on tab 3. In short:
-   - new sentence, new topic; never reuse ACT text. Baseball and Yankees
-     topics keep it fun, but every fact must be true. If you're not sure of
-     a fact, use a generic baseball scene instead.
+   - new sentence, new topic; never reuse ACT text. Not baseball: the
+     game around the questions is the Yankees theme, the sentences are on
+     the subjects real ACT passages use (science, history, the arts,
+     places, people's work), spread widely. Set `topic`. The topic must
+     never decide the answer. Every fact must be true; if you're not sure
+     of one, use a generic scene instead.
    - four choices, first is always "No Change"; exactly one right answer.
      The exception is a question about what a part does (what deleting it
      loses, keep or delete): those have four descriptions and no No Change,
@@ -129,7 +146,7 @@ want it as a mock (the About page still links its PDF).
      where the answer sits
    - `trap` is the index of the choice that repeats the mistake he made
    - No Change is right about one time in four; vary the answer position.
-     Rematches meet this (13 of 47); cousins do not yet (2 of 38)
+     In play now: rematches 24 of 92 with a No Change choice, cousins 14 of 74
    - `why` and `trapWhy` are one sentence each, talking to Levi
    - `from` names the real question it rematches, e.g. "25MC1 #21"
    - new `id`s only; stats are keyed on them. Questions can go anywhere
@@ -184,7 +201,11 @@ means rewriting history and force-pushing, which is Lindsay's decision.
 Owned here, so they aren't lost in a commit message. Remove a line when it's done.
 Every question and tip has now had the step-5 validation (G19 batch on
 2026-10-03, the 69 older ones on 2026-10-10, which found one question with
-two defensible answers and a dozen false or over-broad explanations).
+two defensible answers and a dozen false or over-broad explanations; the
+92 non-baseball ones on 2026-10-11, where four blind solvers matched every
+key but the auditors found three comma questions resting on an optional
+comma, a false "that/which can't follow a place" rule, and two rematches
+(rp4, rp9) whose trap wasn't his #31 mistake).
 
 In rough order of value to Levi:
 
@@ -193,10 +214,6 @@ In rough order of value to Levi:
   2176 #1, PT2 #11, #46. Set `family`/`core` in the JSON (have a fresh
   agent judge "same narrow rule" too), run `node tools/build-officials.js`,
   update SKILLS.md and the legend in `game.js` `roadTrip`.
-- Cousins have No Change right 2 times in 38, so "No Change is wrong on a
-  new pitch" is learnable. Rebalance when cousins are next touched.
-- In the unnecessary-punctuation rematches, the right answer is usually
-  the version with the fewest commas; only up3 rewards adding them.
 - The "send to Mark" link has been tested in a desktop browser only, never
   on Levi's phone.
 

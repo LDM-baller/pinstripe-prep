@@ -1,7 +1,8 @@
 # Pinstripe Prep
 
 A Yankees-themed ACT English practice game built from the questions Levi
-missed on practice ACTs (25MC1 and G19). Two kinds of pitch:
+missed on practice ACTs (25MC1 and G19). The game is baseball; the sentences
+are mostly on other subjects, like real ACT passages. Two kinds of pitch:
 
 - **Rematches:** new sentence, same rule, same trap as a question he missed.
 - **New pitches:** the same skill family, but a different rule from ACT's
@@ -18,8 +19,9 @@ missed on practice ACTs (25MC1 and G19). Two kinds of pitch:
   extra bases: on the 42-second clock, under 15 seconds is a home run (the cutoffs scale with the clock you pick). Three in a row and you're on fire,
   so every hit goes one base farther.
 - **Wrong answer = strikeout.** The app flags the trap choice, explains why it's
-  wrong, and sends the question to the **Film Room**. It keeps coming back until
-  you hit it there.
+  wrong, and sends the miss to the **Film Room**. The question you missed rests
+  for three days (you know its answer now); the Film Room throws you a
+  different question on the same skill, and a hit clears the miss.
 - **Batting Practice:** drill a single rule with no score.
 - **Road Trip:** real questions from ACT's free official practice tests that
   test the same skills, by question number, with links to ACT's PDFs. Do them

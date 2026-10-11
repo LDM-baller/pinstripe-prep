@@ -42,8 +42,9 @@ function bar(h, ab) {
 // ---------- numbers ----------
 function tally(S, filter) {
   let ab = 0, h = 0, seenQs = 0;
-  for (const q of QUESTIONS) if (filter(q)) { const st = S.q[q.id]; if (st && st.seen) { ab += st.seen; h += st.right; seenQs++; } }
-  return { ab, h, seenQs, total: QUESTIONS.filter(filter).length };
+  // Retired questions still count toward his average, but not toward "x of y seen".
+  for (const q of QUESTIONS) if (filter(q)) { const st = S.q[q.id]; if (st && st.seen) { ab += st.seen; h += st.right; if (!q.retired) seenQs++; } }
+  return { ab, h, seenQs, total: QUESTIONS.filter(q => filter(q) && !q.retired).length };
 }
 function missesByTrap(S, filter) {
   const qById = Object.fromEntries(QUESTIONS.map(q => [q.id, q]));
@@ -139,14 +140,15 @@ function render(S, snap) {
     <h3 class="sec">Where the questions come from</h3>
     <div class="panel prose">
       <p>Everything starts with the <b>English questions Levi missed on real practice ACTs</b>: 8 on 25MC1, the practice ACT in ACT's free official guide for 2025–26, and 4 on G19, the April 2024 ACT, which Mark assigned as a 13-minute mini-test. Eleven were confirmed against ACT's answer keys; one (25MC1 #15) is unresolved and not used.</p>
-      <details><summary><b>Rematches</b> · ${QUESTIONS.filter(q => q.kind === "rematch").length} questions</summary>
+      <details><summary><b>Rematches</b> · ${QUESTIONS.filter(q => q.kind === "rematch" && !q.retired).length} questions</summary>
         <p>Each one is a new sentence on the <i>same narrow rule</i> as a real miss, and one wrong answer is always the same trap he fell for. Written from the notes in his wrong-answer bank: what the question tests, the trap, and how to build a new one. About one in four has "No Change" as the answer, like the real test.</p></details>
-      <details><summary><b>New pitches</b> · ${QUESTIONS.filter(q => q.kind === "cousin").length} questions</summary>
+      <details><summary><b>New pitches</b> · ${QUESTIONS.filter(q => q.kind === "cousin" && !q.retired).length} questions</summary>
         <p>Same skill family, different rule. ACT publishes about 90 numbered English skills (its College & Career Readiness Standards). For each miss, these questions drill the <i>neighbouring</i> standards. For example, his "one of the notes" miss is USG 701, so the new pitches cover USG 601: inverted order, "neither," "either/or," "there are." They were added because rematches alone felt too familiar.</p></details>
       <details><summary><b>Road Trip</b> · ${OFFICIAL.length} official ACT questions</summary>
         <p>Real ACT questions from the two free official tests Levi hasn't seen, both posted on act.org: <a href="${OFFICIAL_TESTS[0].url}" target="_blank" rel="noopener">Form 2176CPRE</a> (2024–25 guide) and <a href="${OFFICIAL_TESTS[1].url}" target="_blank" rel="noopener">Practice Test 2</a>. Every English question in both was solved and coded against ACT's standards, and the ones in his skill families are listed by number and page. The app links to ACT's PDFs rather than copying the questions, which are ACT's copyright. The free 2025–26 and 2026–27 guides both use 25MC1's English section, so they add nothing new. Practice Test 2 is hidden by default in case Mark wants it as a mock.</p></details>
       <details><summary>How the sentences are written</summary>
-        <p>All app questions are original. Topics are baseball and the Yankees to keep it fun; the facts were checked, and anything uncertain uses a generic ballpark scene. Every question was answered cold to make sure exactly one choice is defensible. Choices after "No Change" are shuffled each time.</p></details>
+        <p>All app questions are original. They started out all baseball, but Levi found that too narrow: a baseball fan could often answer from the baseball instead of the grammar. Now most sentences are on other subjects (science, history, music, art, places, people's work), like real ACT passages; the baseball ones that gave the answer away were retired, and the rest come up less often. Facts were checked, and anything uncertain uses a generic scene. Every question was answered cold by separate checkers to make sure exactly one choice is defensible. Choices after "No Change" are shuffled each time.</p>
+        <p><b>When he misses one,</b> that exact question rests for three days, since he knows its answer now. The Film Room throws him a <i>different</i> question on the same skill (same ACT code if there is one, otherwise the same rule), and a hit there clears the miss.</p></details>
     </div>
 
     <h3 class="sec">The skill map</h3>
